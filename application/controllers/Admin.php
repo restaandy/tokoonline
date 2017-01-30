@@ -40,7 +40,6 @@ class Admin extends CI_Controller {
 		$data['logo']="Toko Online";
 		$data['content']=$this->load->view("page/barang",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
-
 	}
 	public function not_found(){
 		show_404();
