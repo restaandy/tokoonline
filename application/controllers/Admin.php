@@ -38,6 +38,7 @@ class Admin extends CI_Controller {
 	{
 		$data['title']="Barang | Admin";
 		$data['logo']="Toko Online";
+		$data['minlogo']="TO";
 		$data['content']=$this->load->view("page/barang",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
 	}
