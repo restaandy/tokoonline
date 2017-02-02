@@ -42,6 +42,39 @@ class Admin extends CI_Controller {
 		$data['content']=$this->load->view("page/barang",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
 	}
+	public function upload_image(){
+		if($this->input->is_ajax_request()){
+		$ds          = DIRECTORY_SEPARATOR;  //1
+ 
+		$storeFolder = '../../assets/upload/image';   //2
+ 
+		if (!empty($_FILES)) {
+		     
+		    $tempFile = $_FILES['file']['tmp_name'];          //3             
+		      
+		    $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds;  //4
+		     
+		    $targetFile =  $targetPath.$_FILES['file']['name'];  //5
+		 
+		    move_uploaded_file($tempFile,$targetFile); //6
+		     
+		}
+		echo $_FILES['file']['name'];
+		}
+	}
+	public function remove_image(){
+		if($this->input->is_ajax_request()){
+		   $storeFolder = './assets/upload/image/';   //2
+		   $file=$this->input->post("filename");
+		   
+		   	if(!unlink($storeFolder.$file)){
+		   		echo "gagal".$storeFolder.$file;
+		   	}else{
+		   		echo "berhasil";
+		   	}
+		   
+		}
+	}
 	public function not_found(){
 		show_404();
 	}

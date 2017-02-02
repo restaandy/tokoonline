@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/select2/select2.min.css">
-<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">      
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/dropzone/dropzone.css">      
       <div class="row">
         <!-- Left col -->
         <section class="col-lg-12">
@@ -9,7 +10,7 @@
               <h3 class="box-title">Tambah Barang</h3>
             </div>
             <div class="box-body">
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <div class="row">
                 <div class="form-group">
                 <label>Nama Barang : </label>
@@ -49,18 +50,33 @@
               
               </div>
               </div>
-              <div class="col-md-8">
-                <div class="form-group">
-                <label>Deskripsi Barang : </label>
-                  <textarea class="textarea" placeholder="Place some text here" style="width: 100%; height: 245px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                </div>                
+              <div class="col-md-7">
+              <div class="form-group">
+                <label>Deskripsi Singkat : </label>
+                 <textarea class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Keyword Pencarian : </label>
+                 <input type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Tag : <small>(Pisah dengan koma ex : mobil,motor)</small> </label>
+                 <input type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Gambar Produk : <small>(Format file : jpg,jpeg,png)</small> </label>
+                <div class="row margin dropzone">
+                	
+                </div>
+              </div>
+                               
               </div>
               <div class="col-md-12">
               <div class="row">
                 <div class="form-group">
-                <label>Gambar Barang : </label>
-                 
-                </div>
+                <label>Deskripsi Barang : </label>
+                  <textarea class="textarea" placeholder="Place some text here" style="width: 100%; height: 245px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                </div> 
                 </div>
               </div>
             </div>
@@ -69,24 +85,6 @@
                 <i class="fa fa-arrow-circle-right"></i></button>
             </div>
           </div>
-        </section>
-        <section class="col-lg-12">
-
-          <!-- quick email widget -->
-          <div class="box box-info">
-            <div class="box-header">
-              <i class="fa fa-th"></i>
-              <h3 class="box-title">Daftar Data Barang</h3>
-            </div>
-            <div class="box-body">
-              
-            </div>
-            <div class="box-footer clearfix">
-              <button type="button" class="pull-right btn btn-default" id="sendEmail">Tambah
-                <i class="fa fa-arrow-circle-right"></i></button>
-            </div>
-          </div>
-
         </section>
         <!-- /.Left col -->
         <!-- right col -->
@@ -94,6 +92,7 @@
       <!-- /.row (main row) -->
       <script src="<?php echo base_url(); ?>assets/plugins/select2/select2.full.min.js"></script>
       <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+      <script src="<?php echo base_url(); ?>assets/plugins/dropzone/dropzone.js"></script>  
       <script>
       $(document).ready(function(){
          $('.filter-text').keypress(function(e){
@@ -114,6 +113,36 @@
          });
       $(".select2").select2(); 
       $(".textarea").wysihtml5();
-    
+      var myDropzone = new Dropzone(".dropzone", {
+      	url:'<?php echo base_url(); ?>admin/upload_image',
+        renameFilename: function (filename) {
+        	filename=filename.replace(" ", "-");
+            return "1_"+filename;
+        },
+        removedfile:function(file){
+        	var _ref;
+        	var filename=$(file.previewTemplate).children('.newnamefile').text();
+        	$.post('<?php echo base_url(); ?>admin/remove_image',{filename:filename},function(data,status){
+        		if(status=="success"){
+        			if(data=="berhasil"){
+        				alert("Terhapus");
+        				if (file.previewElement) {
+				          if ((_ref = file.previewElement) != null) {
+				            _ref.parentNode.removeChild(file.previewElement);
+				          }
+				        }
+			        	return myDropzone._updateMaxFilesReachedClass();
+        			}else{
+        				alert("gagal hapus gambar dari server"+data);
+        			}
+        		}else{
+        			alert("gagal hapus gambar dari server n"+data);
+        		}
+        	});            	
+        },
+        dictRemoveFileConfirmation:"yakin hapus foto ?",
+        maxFiles:5
+      });
+
     });  
       </script>
