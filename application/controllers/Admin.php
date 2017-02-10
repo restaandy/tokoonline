@@ -42,6 +42,11 @@ class Admin extends CI_Controller {
 		$data['content']=$this->load->view("page/barang",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
 	}
+	function simpan_barang(){
+		echo "<pre>";
+		print_r($this->input->post());
+		echo "</pre>";
+	}
 	public function upload_image(){
 		if($this->input->is_ajax_request()){
 		$ds          = DIRECTORY_SEPARATOR;  //1

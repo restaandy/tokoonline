@@ -374,10 +374,12 @@
       sending: noop,
       sendingmultiple: noop,
       success: function(file,responseText,e) {
+       /*
         if (file.previewElement) {
           $(file.previewTemplate).append('<span class="newnamefile" style="display:none;">'+responseText+'</span>'); 
           return file.previewElement.classList.add("dz-success");
         }
+        */
       },
       successmultiple: noop,
       canceled: function(file,responseText,e) {
