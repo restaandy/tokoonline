@@ -19,7 +19,7 @@
                 </div>  
                 <div class="form-group">
                 <label>Kategori : </label>
-                <select class="form-control select2" multiple="multiple" required name="kategori_barang" data-placeholder="pilih kategori barang" style="width: 100%;">
+                <select class="form-control select2" multiple="multiple" required name="kategori_barang[]" data-placeholder="pilih kategori barang" style="width: 100%;">
                   <option>Alabama</option>
                   <option>Alaska</option>
                   <option>California</option>

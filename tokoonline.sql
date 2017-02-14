@@ -1,6 +1,6 @@
 /*
-SQLyog Professional v10.42 
-MySQL - 5.6.17 : Database - ecommerce
+SQLyog Ultimate v10.42 
+MySQL - 5.7.14 : Database - ecommerce
 *********************************************************************
 */
 
@@ -9,8 +9,13 @@ MySQL - 5.6.17 : Database - ecommerce
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`ecommerce` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `ecommerce`;
+
 /*Table structure for table `barang` */
 
 DROP TABLE IF EXISTS `barang`;
@@ -20,9 +25,11 @@ CREATE TABLE `barang` (
   `id_barang` varchar(100) NOT NULL,
   `nama_brg` varchar(255) NOT NULL,
   `kategori` text,
-  `deskripsi` text,
-  `harga` int(11) NOT NULL,
   `diskon` tinyint(3) DEFAULT NULL,
+  `tag` text,
+  `keyword` text,
+  `deskripsi` text,
+  `keterangan` text,
   `gambar_1` text,
   `gambar_2` text,
   `gambar_3` text,
@@ -100,6 +107,33 @@ CREATE TABLE `loc_prov` (
 
 insert  into `loc_prov`(`id`,`provinsi`) values (1,'ACEH'),(2,'SUMATERA UTARA'),(3,'SUMATERA BARAT'),(4,'RIAU'),(5,'JAMBI'),(6,'SUMATERA SELATAN'),(7,'BENGKULU'),(8,'LAMPUNG'),(9,'KEP. BANGKA BELITUNG'),(10,'KEP. RIAU'),(11,'DKI JAKARTA'),(12,'JAWA BARAT'),(13,'JAWA TENGAH'),(14,'BANTEN'),(15,'JAWA TIMUR'),(16,'YOGYAKARTA'),(17,'BALI'),(18,'NUSA TENGGARA BARAT'),(19,'NUSA TENGGARA TIMUR'),(20,'KALIMANTAN BARAT'),(21,'KALIMANTAN TENGAH'),(22,'KALIMANTAN SELATAN'),(23,'KALIMANTAN TIMUR'),(24,'KALIMANTAN UTARA'),(25,'SULAWESI UTARA'),(26,'SULAWESI TENGAH'),(27,'SULAWESI SELATAN'),(28,'SULAWESI TENGGARA'),(29,'GORONTALO'),(30,'SULAWESI BARAT'),(31,'MALUKU'),(32,'MALUKU UTARA'),(33,'PAPUA'),(34,'PAPUA BARAT');
 
+/*Table structure for table `member` */
+
+DROP TABLE IF EXISTS `member`;
+
+CREATE TABLE `member` (
+  `no` bigint(100) NOT NULL AUTO_INCREMENT,
+  `id_member` varchar(100) NOT NULL,
+  `nama_dpn` varchar(30) DEFAULT NULL,
+  `nama_blk` varchar(30) DEFAULT NULL,
+  `jenkel` enum('L','P') DEFAULT NULL,
+  `tgl_lhr` date DEFAULT NULL,
+  `tmp_lhr` varchar(50) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
+  `nohp` varchar(20) NOT NULL,
+  `foto` text,
+  `id_prov` tinyint(4) NOT NULL,
+  `id_kabkot` int(11) NOT NULL,
+  `id_kec` int(11) NOT NULL,
+  `ket_almt` text NOT NULL,
+  `kodepos` varchar(15) DEFAULT NULL,
+  `tgl_daftar` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_member`),
+  KEY `no` (`no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `member` */
+
 /*Table structure for table `trans_cart` */
 
 DROP TABLE IF EXISTS `trans_cart`;
@@ -124,5 +158,6 @@ CREATE TABLE `trans_cart` (
 /*Data for the table `trans_cart` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

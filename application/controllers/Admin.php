@@ -43,9 +43,24 @@ class Admin extends CI_Controller {
 		$this->dashboard($data,"xxx!@#xxx");
 	}
 	function simpan_barang(){
-		echo "<pre>";
 		print_r($this->input->post());
-		echo "</pre>";
+			$datainput=array(
+				'nama_brg'=>$this->input->post('nama_barang'),
+				'kategori'=>implode(",",$this->input->post('kategori_barang')),
+				'keyword'=>$this->input->post('keyword_barang'),
+				'deskripsi'=>$this->input->post('deskripsi_barang'),
+				'keterangan'=>$this->input->post('keterangan_barang'),
+				'harga'=>$this->input->post('harga_barang'),
+				'stock'=>$this->input->post('stok_barang'),
+				'status'=>$this->input->post('status_barang')
+			);
+			$this->db->set('date_update', 'NOW()', FALSE);
+			$this->db->insert("barang",$datainput);
+			if($this->db->affected_rows()>0){
+				
+			}else{
+				
+			}
 	}
 	public function upload_image(){
 		if($this->input->is_ajax_request()){
