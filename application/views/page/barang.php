@@ -54,7 +54,7 @@
               <div class="col-md-7">
               <div class="form-group">
                 <label>Deskripsi Singkat : </label>
-                 <textarea class="form-control filter-text" name="deskripsi_barang" required></textarea>
+                 <textarea class="form-control filter-text" name="deskripsi_barang" style="height:106px;" required></textarea>
               </div>
               <div class="form-group">
                 <label>Keyword Pencarian : </label>
@@ -65,15 +65,22 @@
                  <input type="text" class="form-control filter-text" name="tag_barang">
               </div>
               <div class="form-group">
+                <label>Link Video : <small>(URL video dari youtube)</small> </label>
+                 <input type="url" class="form-control" name="video_barang">
+              </div>                 
+              </div>
+              <div class="col-md-12">
+              <div class="row">
+                <div class="form-group">
                 <label>Gambar Produk : <small>(Format file : jpg,jpeg,png)</small> </label>
                 <div class="row margin dropzone">
-                	
+                  
                 </div>
                 <div class="hide" id="inputgambar">
                   
                 </div>
               </div>
-                               
+              </div>
               </div>
               <div class="col-md-12">
               <div class="row">
@@ -130,24 +137,20 @@
         	var filename=$(file.previewTemplate).children('.newnamefile').text();
         	$.post('<?php echo base_url(); ?>admin/remove_image',{filename:filename},function(data,status){
         		if(status=="success"){
-        			if(data=="berhasil"){
-        				alert("Terhapus");
-        				if (file.previewElement) {
-				          if ((_ref = file.previewElement) != null) {
+        			alert("Terhapus");
+                if (file.previewElement) {
+                  if ((_ref = file.previewElement) != null) {
                         $(".imageupload").each(function(){
                             if($(this).val()==filename){
                               $(this).remove();
                             }
                         });
-				            _ref.parentNode.removeChild(file.previewElement);
-				          }
-				        }
-			        	return myDropzone._updateMaxFilesReachedClass();
-        			}else{
-        				alert("gagal hapus gambar dari server"+data);
-        			}
+                    _ref.parentNode.removeChild(file.previewElement);
+                  }
+                }
+                return myDropzone._updateMaxFilesReachedClass();
         		}else{
-        			alert("gagal hapus gambar dari server n"+data);
+        			alert("gagal hapus gambar dari server silahkan ulangi");
         		}
         	});            	
         },
@@ -160,8 +163,24 @@
           }
         },
         dictRemoveFileConfirmation:"yakin hapus foto ?",
-        maxFiles:5
+        maxFiles:7
       });
-
     });  
+      
+     $( window ).bind( 'beforeunload' , function( event ) {
+        
+        setTimeout( function() {
+             if (window.confirm('yes/no?'))
+            {
+              alert('yes');
+            }
+            else
+            {
+              alert('no');
+            }
+        });
+        return '';
+    }).bind( 'unload', function( event ) {
+        console.log(event);
+    });
       </script>

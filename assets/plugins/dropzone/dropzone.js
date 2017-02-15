@@ -119,7 +119,7 @@
       withCredentials: false,
       parallelUploads: 2,
       uploadMultiple: false,
-      maxFilesize: 256,
+      maxFilesize: 2,
       paramName: "file",
       createImageThumbnails: true,
       maxThumbnailFilesize: 10,
@@ -249,6 +249,7 @@
         return this.element.classList.remove("dz-started");
       },
       addedfile: function(file) {
+        if(this.options.maxFiles>=this.files.length){
         var node, removeFileEvent, removeLink, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
         if (this.element === this.previewsContainer) {
           this.element.classList.add("dz-started");
@@ -300,6 +301,9 @@
           }
           return _results;
         }
+       }else{
+        alert("Maksimal "+this.options.maxFiles+" Gambar");
+       }
       },
       removedfile: function(file) {
         var _ref;
@@ -1254,6 +1258,7 @@
       response = null;
       handleError = (function(_this) {
         return function() {
+
           var _j, _len1, _results;
           _results = [];
           for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
@@ -1395,7 +1400,6 @@
 
     Dropzone.prototype._finished = function(files, responseText, e) {
       var file, _i, _len;
-
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
         file.status = Dropzone.SUCCESS;

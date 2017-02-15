@@ -43,44 +43,50 @@ class Admin extends CI_Controller {
 		$this->dashboard($data,"xxx!@#xxx");
 	}
 	function simpan_barang(){
-		print_r($this->input->post());
+
 			$datainput=array(
 				'nama_brg'=>$this->input->post('nama_barang'),
 				'kategori'=>implode(",",$this->input->post('kategori_barang')),
+				'tag'=>$this->input->post('tag_barang'),
 				'keyword'=>$this->input->post('keyword_barang'),
 				'deskripsi'=>$this->input->post('deskripsi_barang'),
 				'keterangan'=>$this->input->post('keterangan_barang'),
 				'harga'=>$this->input->post('harga_barang'),
 				'stock'=>$this->input->post('stok_barang'),
+				'video'=>$this->input->post('video_barang'),
 				'status'=>$this->input->post('status_barang')
 			);
+			$image=$this->input->post("img");
+			foreach ($image as $index=>$key) {
+				$dataimage=json_decode($key);
+				$this->db->set('gambar_aktiv', 1,FALSE);
+				$this->db->set('gambar_'.($index+1), $dataimage->message);
+			}
 			$this->db->set('date_update', 'NOW()', FALSE);
+			$this->db->set('id_barang', random_string('alnum', 8));
 			$this->db->insert("barang",$datainput);
 			if($this->db->affected_rows()>0){
-				
+				$this->session->set_flashdata("simpan",array("status"=>true));
 			}else{
-				
+				$this->session->set_flashdata("simpan",array("status"=>false));
 			}
+			redirect("admin/barang");
 	}
 	public function upload_image(){
 		if($this->input->is_ajax_request()){
-		$ds          = DIRECTORY_SEPARATOR;  //1
- 
-		$storeFolder = '../../assets/upload/image';   //2
- 
-		if (!empty($_FILES)) {
-		     
-		    $tempFile = $_FILES['file']['tmp_name'];          //3             
-		      
-		    $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds;  //4
-		     
-		    $targetFile =  $targetPath.$_FILES['file']['name'];  //5
-		 
-		    move_uploaded_file($tempFile,$targetFile); //6
-		     
-		}
-		echo $_FILES['file']['name'];
-		}
+			$config['upload_path'] = './assets/upload/image/';
+			$config['allowed_types'] = 'jpg|png';
+			$config['max_size']     = '500';
+			$config['max_width'] = '768';
+			$config['max_height'] = '768';
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+				if ($this->upload->do_upload("file")) {
+					echo json_encode(array("status"=>true,"message"=>$this->upload->data('file_name')));
+				}else{
+					echo json_encode(array("status"=>false,"message"=>$this->upload->display_errors()));
+				}
+			}
 	}
 	public function remove_image(){
 		if($this->input->is_ajax_request()){

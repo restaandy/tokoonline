@@ -22,10 +22,11 @@ DROP TABLE IF EXISTS `barang`;
 
 CREATE TABLE `barang` (
   `no` bigint(20) NOT NULL AUTO_INCREMENT,
-  `id_barang` varchar(100) NOT NULL,
+  `id_barang` varchar(20) NOT NULL,
   `nama_brg` varchar(255) NOT NULL,
   `kategori` text,
   `diskon` tinyint(3) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
   `tag` text,
   `keyword` text,
   `deskripsi` text,
@@ -35,16 +36,20 @@ CREATE TABLE `barang` (
   `gambar_3` text,
   `gambar_4` text,
   `gambar_5` text,
-  `gambar_aktiv` bit(1) DEFAULT NULL,
+  `gambar_6` text,
+  `gambar_7` text,
+  `gambar_aktiv` tinyint(1) DEFAULT NULL,
   `video` text,
-  `status` bit(1) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
   `date_update` datetime DEFAULT NULL,
   PRIMARY KEY (`id_barang`),
   KEY `no` (`no`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `barang` */
+
+insert  into `barang`(`no`,`id_barang`,`nama_brg`,`kategori`,`diskon`,`harga`,`tag`,`keyword`,`deskripsi`,`keterangan`,`gambar_1`,`gambar_2`,`gambar_3`,`gambar_4`,`gambar_5`,`gambar_6`,`gambar_7`,`gambar_aktiv`,`video`,`status`,`stock`,`date_update`) values (1,'Huysbzvx','sfdsafa','Alaska',NULL,33444,'sadfasd','sadfasd','sdfasdfa','<p><b>asfsdfasd</b></p>','1_1_Lip-Mask_Colagen.jpg','1_1_Collagen-Crystal_Eye_Mask.jpg',NULL,NULL,NULL,NULL,NULL,1,'http://praktisikomputer.com',1,3,'2017-02-15 06:23:20');
 
 /*Table structure for table `kategori` */
 
