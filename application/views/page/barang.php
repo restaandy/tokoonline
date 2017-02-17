@@ -1,6 +1,43 @@
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/select2/select2.min.css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/dropzone/dropzone.css">      
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/taginput/jquery.tagsinput.css" />
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/taginput/jquery.tagsinput.js"></script>
+<style type="text/css">
+.drop-area
+{
+  text-align: center;
+  vertical-align: middle;
+  line-height: 90px;
+  height:100px;
+  background-color:white;
+  border:3px dashed grey;
+  margin-bottom: 5px;
+}
+.drop-area:hover{
+  color:red;
+  cursor: pointer;
+}
+img {
+    max-height: 100%;
+    width:100%;
+}
+fieldset {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    border:none;
+    width:240px;
+
+}
+</style>   
       <div class="row">
         <!-- Left col -->
         <?php echo form_open('admin/simpan_barang',array("id"=>"formbarang","method"=>"post","enctype"=>"multipart/form-data")); ?>
@@ -48,39 +85,92 @@
                     <option value="0">Belum Tersedia</option>
                   </select>
               </div>         
-              
-              </div>
-              </div>
-              <div class="col-md-7">
               <div class="form-group">
-                <label>Deskripsi Singkat : </label>
-                 <textarea class="form-control filter-text" name="deskripsi_barang" style="height:106px;" required></textarea>
-              </div>
-              <div class="form-group">
-                <label>Keyword Pencarian : </label>
-                 <input type="text" class="form-control filter-text" name="keyword_barang">
-              </div>
-              <div class="form-group">
-                <label>Tag : <small>(Pisah dengan koma ex : mobil,motor)</small> </label>
-                 <input type="text" class="form-control filter-text" name="tag_barang">
+                <label>Kondisi Barang : <small>(sertakan kondisi barang yang anda jual)</small> </label>
+                  <select class="form-control" name="kondisi" required>
+                    <option value="">Kondisi Barang</option>
+                    <option value="Baru">Baru</option>
+                    <option value="Bekas">Bekas</option>
+                    <option value="Bekas">Rusak</option>
+                    <option value="LainLain">Tanyakan pada penjual</option>
+                  </select>
               </div>
               <div class="form-group">
                 <label>Link Video : <small>(URL video dari youtube)</small> </label>
                  <input type="url" class="form-control" name="video_barang">
-              </div>                 
               </div>
-              <div class="col-md-12">
+              </div>
+              </div>
+              <div class="col-md-7">
+              
+              <fieldset>
+              <legend>Pengaturan pada Search Engine</legend>
+              <div class="form-group">
+                <label>Deskripsi Singkat : </label>
+                 <textarea class="form-control filter-text" maxlength="160" name="deskripsi_barang" style="height:106px;" required></textarea>
+              </div>
+              <div class="form-group">
+                <label>Keyword Pencarian : <small>(Pisah dengan koma ex : jual mobil sedan, mobil sedan antik)</small></label>
+                 <input type="text" class="form-control filter-text" maxlength="160" name="keyword_barang">
+              </div>
+              <div class="form-group">
+                <label>Tag : <small>(Pisah dengan koma ex : mobil,motor)</small> </label>
+                 <input type="text" class="form-control filter-text" data-role="tagsinput" id="tag_barang" name="tag_barang">
+              </div>
+              </fieldset>                 
+              </div>
               <div class="row">
-                <div class="form-group">
-                <label>Gambar Produk : <small>(Format file : jpg,jpeg,png)</small> </label>
-                <div class="row margin dropzone">
-                  
-                </div>
-                <div class="hide" id="inputgambar">
-                  
-                </div>
-              </div>
-              </div>
+              <div class="col-md-12">
+              <div class="form-group">
+        <div class="col-lg-2 col-xs-4">
+          <!-- small box -->
+          <div class="small-box drop-area" id="Timage1" img-name="image1">Drop to Add Image</div>
+          <div class="progress progress-bar" id="pro1" style="width: 0%;height:8px;"></div>
+          <input type="file" id="image1" name="image1" onchange="fileclickupload(this,'1');" class="hide">
+          <input type="hidden" id="file1" name="file1" value="">
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+          <!-- small box -->
+          <div class="small-box drop-area" id="Timage2" img-name="image2">Drop to Add Image</div>
+          <div class="progress progress-bar" id="pro2" style="width: 0%;height:8px;"></div>
+          <input type="file" id="image2" name="image2" onchange="fileclickupload(this,'2');" class="hide">
+          <input type="hidden" id="file2" name="file2" value="">
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+          <!-- small box -->
+          <div class="small-box drop-area" id="Timage3" img-name="image3">Drop to Add Image</div>
+          <div class="progress progress-bar" id="pro3" style="width: 0%;height:8px;"></div>
+          <input type="file" id="image3" name="image3" onchange="fileclickupload(this,'3');" class="hide">
+          <input type="hidden" id="file3" name="file3" value="">
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+          <!-- small box -->
+          <div class="small-box drop-area" id="Timage4" img-name="image4">Drop to Add Image</div>
+          <div class="progress progress-bar" id="pro4" style="width: 0%;height:8px;"></div>
+          <input type="file" id="image4" name="image4" onchange="fileclickupload(this,'4');" class="hide">
+          <input type="hidden" id="file4" name="file4" value="">
+        </div>
+        <div class="col-lg-2 col-xs-4">
+          <!-- small box -->
+          <div class="small-box drop-area" id="Timage5" img-name="image5">Drop to Add Image</div>
+          <div class="progress progress-bar" id="pro5" style="width: 0%;height:8px;"></div>
+          <input type="file" id="image5" name="image5" onchange="fileclickupload(this,'5');" class="hide">
+          <input type="hidden" id="file5" name="file5" value="">
+        </div>
+        <div class="col-lg-2 col-xs-4">
+          <!-- small box -->
+          <div class="small-box drop-area" id="Timage6" img-name="image6">Drop to Add Image</div>
+          <div class="progress progress-bar" id="pro6" style="width: 0%;height:8px;"></div> 
+          <input type="file" id="image6" name="image6" onchange="fileclickupload(this,'6');" class="hide">
+          <input type="hidden" id="file6" name="file6" value="">
+
+        </div>
+        <!-- ./col -->
+      </div>
+      </div>
               </div>
               <div class="col-md-12">
               <div class="row">
@@ -104,8 +194,94 @@
       <!-- /.row (main row) -->
       <script src="<?php echo base_url(); ?>assets/plugins/select2/select2.full.min.js"></script>
       <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-      <script src="<?php echo base_url(); ?>assets/plugins/dropzone/dropzone.js"></script>  
+      
       <script>
+$(document).ready(function()
+{
+ $(".drop-area").on('dragenter', function (e){
+  e.preventDefault();
+ });
+ $(".drop-area").on('click', function (e){
+  e.preventDefault();
+  $('#'+$(this).attr("img-name")).click();
+ });
+
+ $(".drop-area").on('dragover', function (e){
+  e.preventDefault();
+  $(this).css('background', '#BBD5B8');
+ });
+ $(".drop-area").on('dragleave', function (e){
+  e.preventDefault();
+  $(this).css('background', 'white');
+ });
+
+ $(".drop-area").on('drop', function (e){
+  e.preventDefault();
+  $(this).css('background', 'white');
+  var image = e.originalEvent.dataTransfer.files;
+  createFormData(image,$(this).attr('id'));
+ });
+});
+function fileclickupload(e,id){
+  var image = e.files;
+  createFormData(image,id);
+}
+
+function createFormData(image,id)
+{
+ var formImage = new FormData();
+ formImage.append('file', image[0]);
+ uploadFormData(formImage,id);
+}
+function uploadFormData(formData,id) 
+{
+  var hasil="";
+$.ajax({
+        type:'POST',
+        url: '<?php echo base_url(); ?>admin/upload_image',
+        data:formData,
+        xhr: function() {
+                var myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload){
+                    myXhr.upload.addEventListener('progress',function(e){
+                      if(e.lengthComputable){
+                          var max = e.total;
+                          var current = e.loaded;
+                          var Percentage = (current * 100)/max;
+                          console.log(Percentage);
+                          if(Percentage >= 100)
+                          {
+                             $('#pro'+id).css("width",Percentage+"%"); 
+                          }
+                      } 
+                    }, false);
+                }
+                return myXhr;
+        },
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+          var result=JSON.parse(data);
+          //alert($('#'+id).attr("img-name")+result.message);
+          if(result.status){
+            $('#Timage'+id).html("");
+            $('#Timage'+id).append('<img src="<?php echo base_url(); ?>assets/upload/temp_image/'+result.message+'" class="img-thumbnail img-responsive">');
+            $('#file'+id).val(result.message);
+          }else{
+            alert("image not allow, check requirement");
+            $('#Timage'+id).html("Drop to Add Image");
+            $('#pro'+id).css("width","0%");
+          }
+          
+        },
+
+        error: function(data){
+          
+        }
+    });
+}
+
       $(document).ready(function(){
          
          $('.filter-text').keypress(function(e){
@@ -126,61 +302,44 @@
          });
       $(".select2").select2(); 
       $(".textarea").wysihtml5();
-      var myDropzone = new Dropzone(".dropzone", {
-      	url:'<?php echo base_url(); ?>admin/upload_image',
-        renameFilename: function (filename) {
-        	filename=filename.replace(" ", "-");
-            return "1_"+filename;
-        },
-        removedfile:function(file){
-        	var _ref;
-        	var filename=$(file.previewTemplate).children('.newnamefile').text();
-        	$.post('<?php echo base_url(); ?>admin/remove_image',{filename:filename},function(data,status){
-        		if(status=="success"){
-        			alert("Terhapus");
-                if (file.previewElement) {
-                  if ((_ref = file.previewElement) != null) {
-                        $(".imageupload").each(function(){
-                            if($(this).val()==filename){
-                              $(this).remove();
-                            }
-                        });
-                    _ref.parentNode.removeChild(file.previewElement);
-                  }
-                }
-                return myDropzone._updateMaxFilesReachedClass();
-        		}else{
-        			alert("gagal hapus gambar dari server silahkan ulangi");
-        		}
-        	});            	
-        },
-        success: function(file,responseText,e) {
-          if (file.previewElement) {
-            $(file.previewTemplate).append('<span class="newnamefile" style="display:none;">'+responseText+'</span>'); 
-            $("#inputgambar").append("<input type='hidden' class='imageupload' name='img[]' value='"+$(file.previewTemplate).children('.newnamefile').text()+"'>");
-            //console.log($(file.previewTemplate).children('.newnamefile').text());
-            return file.previewElement.classList.add("dz-success");
-          }
-        },
-        dictRemoveFileConfirmation:"yakin hapus foto ?",
-        maxFiles:7
-      });
-    });  
+   });   
       
      $( window ).bind( 'beforeunload' , function( event ) {
         
         setTimeout( function() {
-             if (window.confirm('yes/no?'))
-            {
-              alert('yes');
-            }
-            else
-            {
-              alert('no');
-            }
         });
         return '';
     }).bind( 'unload', function( event ) {
-        console.log(event);
+        //console.log(event);
+    });
+    $(function() {
+
+      $('#tag_barang').tagsInput({width:'auto'});
+      /*
+      $('#tags_2').tagsInput({
+        width: 'auto',
+        onChange: function(elem, elem_tags)
+        {
+          var languages = ['php','ruby','javascript'];
+          $('.tag', elem_tags).each(function()
+          {
+            if($(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
+              $(this).css('background-color', 'yellow');
+          });
+        }
+      });
+      $('#tags_3').tagsInput({
+        width: 'auto',
+
+        //autocomplete_url:'test/fake_plaintext_endpoint.html' //jquery.autocomplete (not jquery ui)
+        autocomplete_url:'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
+      });
+*/
+
+// Uncomment this line to see the callback functions in action
+//      $('input.tags').tagsInput({onAddTag:onAddTag,onRemoveTag:onRemoveTag,onChange: onChangeTag});
+
+// Uncomment this line to see an input with no interface for adding new tags.
+//      $('input.tags').tagsInput({interactive:false});
     });
       </script>

@@ -53,15 +53,18 @@ class Admin extends CI_Controller {
 				'keterangan'=>$this->input->post('keterangan_barang'),
 				'harga'=>$this->input->post('harga_barang'),
 				'stock'=>$this->input->post('stok_barang'),
+				'kondisi'=>$this->input->post('kondisi'),
 				'video'=>$this->input->post('video_barang'),
 				'status'=>$this->input->post('status_barang')
 			);
-			$image=$this->input->post("img");
-			foreach ($image as $index=>$key) {
-				$dataimage=json_decode($key);
-				$this->db->set('gambar_aktiv', 1,FALSE);
-				$this->db->set('gambar_'.($index+1), $dataimage->message);
-			}
+			$this->db->set('gambar_1',$this->input->post("file1"));
+			//rename("user/image1.jpg", "user/del/image1.jpg");
+			$this->db->set('gambar_2',$this->input->post("file2"));
+			$this->db->set('gambar_3',$this->input->post("file3"));
+			$this->db->set('gambar_4',$this->input->post("file4"));
+			$this->db->set('gambar_5',$this->input->post("file5"));
+			$this->db->set('gambar_6',$this->input->post("file6"));
+	
 			$this->db->set('date_update', 'NOW()', FALSE);
 			$this->db->set('id_barang', random_string('alnum', 8));
 			$this->db->insert("barang",$datainput);
@@ -74,11 +77,12 @@ class Admin extends CI_Controller {
 	}
 	public function upload_image(){
 		if($this->input->is_ajax_request()){
-			$config['upload_path'] = './assets/upload/image/';
+			$config['upload_path'] = './assets/upload/temp_image/';
 			$config['allowed_types'] = 'jpg|png';
 			$config['max_size']     = '500';
 			$config['max_width'] = '768';
 			$config['max_height'] = '768';
+			$config['file_name'] = "1_".$_FILES['file']['name'];
 			$this->load->library('upload', $config);
 			$this->upload->initialize($config);
 				if ($this->upload->do_upload("file")) {
@@ -90,9 +94,10 @@ class Admin extends CI_Controller {
 	}
 	public function remove_image(){
 		if($this->input->is_ajax_request()){
-		   $storeFolder = './assets/upload/image/';   //2
+		   $storeFolder = './assets/upload/temp_image/';   //2
 		   $file=$this->input->post("filename");
-		   
+		   $dataimage=json_decode($file);
+		   $file=$dataimage->message;	
 		   	if(!unlink($storeFolder.$file)){
 		   		echo "gagal".$storeFolder.$file;
 		   	}else{

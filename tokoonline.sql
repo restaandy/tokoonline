@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v10.42 
-MySQL - 5.7.14 : Database - ecommerce
+SQLyog Professional v10.42 
+MySQL - 5.6.17 : Database - ecommerce
 *********************************************************************
 */
 
@@ -9,13 +9,8 @@ MySQL - 5.7.14 : Database - ecommerce
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`ecommerce` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-USE `ecommerce`;
-
 /*Table structure for table `barang` */
 
 DROP TABLE IF EXISTS `barang`;
@@ -37,10 +32,9 @@ CREATE TABLE `barang` (
   `gambar_4` text,
   `gambar_5` text,
   `gambar_6` text,
-  `gambar_7` text,
-  `gambar_aktiv` tinyint(1) DEFAULT NULL,
   `video` text,
   `status` tinyint(1) DEFAULT NULL,
+  `kondisi` enum('Baru','Bekas','Rusak','LainLain') DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
   `date_update` datetime DEFAULT NULL,
   PRIMARY KEY (`id_barang`),
@@ -49,7 +43,7 @@ CREATE TABLE `barang` (
 
 /*Data for the table `barang` */
 
-insert  into `barang`(`no`,`id_barang`,`nama_brg`,`kategori`,`diskon`,`harga`,`tag`,`keyword`,`deskripsi`,`keterangan`,`gambar_1`,`gambar_2`,`gambar_3`,`gambar_4`,`gambar_5`,`gambar_6`,`gambar_7`,`gambar_aktiv`,`video`,`status`,`stock`,`date_update`) values (1,'Huysbzvx','sfdsafa','Alaska',NULL,33444,'sadfasd','sadfasd','sdfasdfa','<p><b>asfsdfasd</b></p>','1_1_Lip-Mask_Colagen.jpg','1_1_Collagen-Crystal_Eye_Mask.jpg',NULL,NULL,NULL,NULL,NULL,1,'http://praktisikomputer.com',1,3,'2017-02-15 06:23:20');
+insert  into `barang`(`no`,`id_barang`,`nama_brg`,`kategori`,`diskon`,`harga`,`tag`,`keyword`,`deskripsi`,`keterangan`,`gambar_1`,`gambar_2`,`gambar_3`,`gambar_4`,`gambar_5`,`gambar_6`,`video`,`status`,`kondisi`,`stock`,`date_update`) values (1,'4r3Ehy9M','Jual processor Intel Hazwel','Alaska,California',NULL,1400000,'processor intel,processor murah','processor hazwel','jual processor hazwel area semarang','<p>Hallo gan</p>','1_cara_memasang_processor_di_motherboard.jpg','','','','','','http://praktisikomputer.com',1,NULL,4,'2017-02-17 15:04:03');
 
 /*Table structure for table `kategori` */
 
@@ -163,6 +157,5 @@ CREATE TABLE `trans_cart` (
 /*Data for the table `trans_cart` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

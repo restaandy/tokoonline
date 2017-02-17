@@ -1,0 +1,40 @@
+var myDropzone = new Dropzone(".dropzone", {
+      	url:'<?php echo base_url(); ?>admin/upload_image',
+        renameFilename: function (filename) {
+        	filename=filename.replace(" ", "-");
+            return "1_"+filename;
+        },
+        removedfile:function(file){
+        	var _ref;
+        	var filename=$(file.previewTemplate).children('.newnamefile').text();
+        	$.post('<?php echo base_url(); ?>admin/remove_image',{filename:filename},function(data,status){
+        		if(status=="success"){
+              console.log(data);
+                if (file.previewElement) {
+                  if ((_ref = file.previewElement) != null) {
+                        $(".imageupload").each(function(){
+                            if($(this).val()==filename){
+                              $(this).remove();
+                            }
+                        });
+                    _ref.parentNode.removeChild(file.previewElement);
+                  }
+                }
+                return myDropzone._updateMaxFilesReachedClass();
+        		}else{
+        			alert("gagal hapus gambar dari server silahkan ulangi");
+        		}
+        	});            	
+        },
+        success: function(file,responseText,e) {
+          if (file.previewElement) {
+            $(file.previewTemplate).append('<span class="newnamefile" style="display:none;">'+responseText+'</span>'); 
+            $("#inputgambar").append("<input type='hidden' class='imageupload' name='img[]' value='"+$(file.previewTemplate).children('.newnamefile').text()+"'>");
+            //console.log($(file.previewTemplate).children('.newnamefile').text());
+            return file.previewElement.classList.add("dz-success");
+          }
+        },
+        dictRemoveFileConfirmation:"yakin hapus foto ?",
+        maxFiles:7
+      });
+    });  
