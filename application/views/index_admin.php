@@ -350,7 +350,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo base_url(); ?>admin/barang"><i class="fa fa-circle-o"></i> Stok Barang</a></li>
+            <li><a href="<?php echo base_url(); ?>admin/barang"><i class="fa fa-circle-o"></i> Tambah Barang</a></li>
+            <li><a href="<?php echo base_url(); ?>admin/liststok"><i class="fa fa-circle-o"></i> Stok Barang</a></li>
           </ul>
         </li>
         <li class="treeview">

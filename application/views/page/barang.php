@@ -91,12 +91,12 @@ legend {
                     <option value="">Kondisi Barang</option>
                     <option value="Baru">Baru</option>
                     <option value="Bekas">Bekas</option>
-                    <option value="Bekas">Rusak</option>
+                    <option value="Rusak">Rusak</option>
                     <option value="LainLain">Tanyakan pada penjual</option>
                   </select>
               </div>
               <div class="form-group">
-                <label>Link Video : <small>(URL video dari youtube)</small> </label>
+                <label>Link Video : <small>(Bisa di isi URL video dari youtube)</small> </label>
                  <input type="url" class="form-control" name="video_barang">
               </div>
               </div>
@@ -105,6 +105,14 @@ legend {
               
               <fieldset>
               <legend>Pengaturan pada Search Engine</legend>
+              <div class="form-group">
+                <label>Judul SEO : <small>(Judul yang tertera pada hasil pencarian search engine)</small></label>
+                 <input type="text" class="form-control filter-text" maxlength="60" name="title_seo">
+              </div>
+              <div class="form-group">
+                <label>Permalink SEO : <small>(Custom Link untuk SEO)</small></label>
+                 <input type="text" class="form-control filter-text-permalink" maxlength="255" name="permalink">
+              </div>
               <div class="form-group">
                 <label>Deskripsi Singkat : </label>
                  <textarea class="form-control filter-text" maxlength="160" name="deskripsi_barang" style="height:106px;" required></textarea>
@@ -121,58 +129,66 @@ legend {
               </div>
               <div class="row">
               <div class="col-md-12">
+              <label>Gambar Produk : <br><small><u><i>Format : (PNG/JPG/JPEG), Max Size : (500kb) Max Height/Width : (768/768 pixel)</i></u></small></label>
               <div class="form-group">
+              <br>
         <div class="col-lg-2 col-xs-4">
           <!-- small box -->
-          <div class="small-box drop-area" id="Timage1" img-name="image1">Drop to Add Image</div>
-          <div class="progress progress-bar" id="pro1" style="width: 0%;height:8px;"></div>
+          <div class="small-box drop-area" id="Timage1" data-index="1" img-name="image1">Click to Add Image</div>
+          <div class="progress progress-bar" id="pro1" style="width: 0%;height:8px;margin-bottom: auto;"></div>
           <input type="file" id="image1" name="image1" onchange="fileclickupload(this,'1');" class="hide">
-          <input type="hidden" id="file1" name="file1" value="">
+          <input type="hidden" id="file1" name="file1" value=""><br>
+          <div onclick="hapusimg(event)" id="hps1" class="hide"><span data-id="1" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Hapus</div>
         </div>
         <!-- ./col -->
         <div class="col-lg-2 col-xs-4">
           <!-- small box -->
-          <div class="small-box drop-area" id="Timage2" img-name="image2">Drop to Add Image</div>
-          <div class="progress progress-bar" id="pro2" style="width: 0%;height:8px;"></div>
+          <div class="small-box drop-area" id="Timage2" data-index="2" img-name="image2">Click to Add Image</div>
+          <div class="progress progress-bar" id="pro2" style="width: 0%;height:8px;margin-bottom: auto;"></div>
           <input type="file" id="image2" name="image2" onchange="fileclickupload(this,'2');" class="hide">
-          <input type="hidden" id="file2" name="file2" value="">
+          <input type="hidden" id="file2" name="file2" value=""><br>
+          <div onclick="hapusimg(event)" id="hps2" class="hide"><span data-id="2" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Hapus</div>
         </div>
         <!-- ./col -->
         <div class="col-lg-2 col-xs-4">
           <!-- small box -->
-          <div class="small-box drop-area" id="Timage3" img-name="image3">Drop to Add Image</div>
-          <div class="progress progress-bar" id="pro3" style="width: 0%;height:8px;"></div>
+          <div class="small-box drop-area" id="Timage3" data-index="3" img-name="image3">Click to Add Image</div>
+          <div class="progress progress-bar" id="pro3" style="width: 0%;height:8px;margin-bottom: auto;"></div>
           <input type="file" id="image3" name="image3" onchange="fileclickupload(this,'3');" class="hide">
-          <input type="hidden" id="file3" name="file3" value="">
+          <input type="hidden" id="file3" name="file3" value=""><br>
+          <div onclick="hapusimg(event)" id="hps3" class="hide"><span data-id="3" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Hapus</div>
         </div>
         <!-- ./col -->
         <div class="col-lg-2 col-xs-4">
           <!-- small box -->
-          <div class="small-box drop-area" id="Timage4" img-name="image4">Drop to Add Image</div>
-          <div class="progress progress-bar" id="pro4" style="width: 0%;height:8px;"></div>
+          <div class="small-box drop-area" id="Timage4" data-index="4" img-name="image4">Click to Add Image</div>
+          <div class="progress progress-bar" id="pro4" style="width: 0%;height:8px;margin-bottom: auto;"></div>
           <input type="file" id="image4" name="image4" onchange="fileclickupload(this,'4');" class="hide">
-          <input type="hidden" id="file4" name="file4" value="">
+          <input type="hidden" id="file4" name="file4" value=""><br>
+          <div onclick="hapusimg(event)" id="hps4" class="hide"><span data-id="4" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Hapus</div>
         </div>
         <div class="col-lg-2 col-xs-4">
           <!-- small box -->
-          <div class="small-box drop-area" id="Timage5" img-name="image5">Drop to Add Image</div>
-          <div class="progress progress-bar" id="pro5" style="width: 0%;height:8px;"></div>
+          <div class="small-box drop-area" id="Timage5" data-index="5" img-name="image5">Click to Add Image</div>
+          <div class="progress progress-bar" id="pro5" style="width: 0%;height:8px;margin-bottom: auto;"></div>
           <input type="file" id="image5" name="image5" onchange="fileclickupload(this,'5');" class="hide">
-          <input type="hidden" id="file5" name="file5" value="">
+          <input type="hidden" id="file5" name="file5" value=""><br>
+          <div onclick="hapusimg(event)" id="hps5" class="hide"><span data-id="5" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Hapus</div>
         </div>
         <div class="col-lg-2 col-xs-4">
           <!-- small box -->
-          <div class="small-box drop-area" id="Timage6" img-name="image6">Drop to Add Image</div>
-          <div class="progress progress-bar" id="pro6" style="width: 0%;height:8px;"></div> 
+          <div class="small-box drop-area" id="Timage6" data-index="6" img-name="image6">Click to Add Image</div>
+          <div class="progress progress-bar" id="pro6" style="width: 0%;height:8px;margin-bottom: auto;"></div> 
           <input type="file" id="image6" name="image6" onchange="fileclickupload(this,'6');" class="hide">
-          <input type="hidden" id="file6" name="file6" value="">
+          <input type="hidden" id="file6" name="file6" value=""><br>
+          <div onclick="hapusimg(event)" id="hps6" class="hide"><span data-id="6" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Hapus</div>
 
         </div>
         <!-- ./col -->
       </div>
       </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12" style="margin-top: 10px">
               <div class="row">
                 <div class="form-group">
                 <label>Deskripsi Barang : </label>
@@ -182,7 +198,8 @@ legend {
               </div>
             </div>
             <div class="box-footer clearfix">
-              <button type="submit" class="pull-right btn btn-primary">Tambah Barang
+               <input type="hidden" name="token" value="<?php echo $this->security->get_csrf_hash(); ?>">
+              <button type="button" onclick="submit()" class="pull-right btn btn-primary">Tambah Barang
                 <i class="fa fa-arrow-circle-right"></i></button>
             </div>
           </div>
@@ -196,15 +213,24 @@ legend {
       <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
       
       <script>
+      function submit(){
+        $("#formbarang").submit();
+      }
+
 $(document).ready(function()
 {
+ $(".drop-area").on('click', function (e){
+  if($('#file'+$(e.target).attr('data-index')).val()==""){
+    $('#'+$(this).attr("img-name")).click();
+  }else{
+    alert("Hapus gambar terlebih dahulu");
+  }
+ });
+ /*
  $(".drop-area").on('dragenter', function (e){
   e.preventDefault();
  });
- $(".drop-area").on('click', function (e){
-  e.preventDefault();
-  $('#'+$(this).attr("img-name")).click();
- });
+ 
 
  $(".drop-area").on('dragover', function (e){
   e.preventDefault();
@@ -221,10 +247,34 @@ $(document).ready(function()
   var image = e.originalEvent.dataTransfer.files;
   createFormData(image,$(this).attr('id'));
  });
+ */
 });
+function hapusimg(e){
+  var id=$(e.target).attr('data-id');
+  var file=$('#file'+id).val();
+  if(id!=undefined){
+    $.post('<?php echo base_url(); ?>admin/remove_image',{file:file},function(data,status){
+      if(status=="success"){
+        var result=JSON.parse(data);
+        if(result.status){
+          alert("gambar "+result.message+" terhapus");
+          $('#Timage'+id).html("Click to Add Image");
+          $('#pro'+id).css("width","0%");
+          $('#hps'+id).addClass("hide");
+          $('#file'+id).val("");
+        }else{
+          alert("gagal menghapus gambar karena : "+result.message);
+        }
+      }else{
+        alert("gagal koneksi dengan server");
+      }
+    });                
+  }
+}
 function fileclickupload(e,id){
   var image = e.files;
   createFormData(image,id);
+  e.value=null;
 }
 
 function createFormData(image,id)
@@ -235,7 +285,7 @@ function createFormData(image,id)
 }
 function uploadFormData(formData,id) 
 {
-  var hasil="";
+var hasil="";
 $.ajax({
         type:'POST',
         url: '<?php echo base_url(); ?>admin/upload_image',
@@ -267,6 +317,7 @@ $.ajax({
           if(result.status){
             $('#Timage'+id).html("");
             $('#Timage'+id).append('<img src="<?php echo base_url(); ?>assets/upload/temp_image/'+result.message+'" class="img-thumbnail img-responsive">');
+            $('#hps'+id).removeClass("hide");
             $('#file'+id).val(result.message);
           }else{
             alert("image not allow, check requirement");
@@ -287,11 +338,19 @@ $.ajax({
          $('.filter-text').keypress(function(e){
             var txt = String.fromCharCode(e.which);
             //console.log(txt + ' : ' + e.which);
-            if(!txt.match(/[A-Za-z0-9+#., ]/)&&e.which!=8) 
+            if(!txt.match(/[A-Za-z0-9+#., -]/)&&e.which!=8) 
             {
                 return false;
             }
          });
+         $('.filter-text-permalink').keypress(function(e){
+                          var txt = String.fromCharCode(e.which);
+                          //console.log(txt + ' : ' + e.which);
+                          if(!txt.match(/[a-z0-9-]/)&&e.which!=8) 
+                          {
+                              return false;
+                          }
+                       });
          $('.filter-number').keypress(function(e){
             var txt = String.fromCharCode(e.which);
             //console.log(txt + ' : ' + e.which);
