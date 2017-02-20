@@ -38,6 +38,12 @@ class Admin extends CI_Controller {
 		$this->dashboard($data,"xxx!@#xxx");
 
 	}
+	public function profile(){
+		$data['title']="Profile | Admin";
+		$data['logo']="Toko Online";
+		$data['content']=$this->load->view("page/profile",$data,true);
+		$this->dashboard($data,"xxx!@#xxx");
+	}
 	public function liststok($id_barang=NULL){
 		$data['title']="Stok Barang | Admin";
 		$data['logo']="Toko Online";
@@ -63,6 +69,95 @@ class Admin extends CI_Controller {
 		$data['minlogo']="TO";
 		$data['content']=$this->load->view("page/barang",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
+	}
+	function edit_barang(){
+		if($this->input->post('token')!=NULL){
+			$id_barang=$this->input->post('id_barang');
+			$datainput=array(
+				'nama_brg'=>$this->input->post('nama_barang'),
+				'kategori'=>implode(",",$this->input->post('kategori_barang')),
+				'tag'=>$this->input->post('tag_barang'),
+				'keyword'=>$this->input->post('keyword_barang'),
+				'deskripsi'=>$this->input->post('deskripsi_barang'),
+				'keterangan'=>$this->input->post('keterangan_barang'),
+				'harga'=>$this->input->post('harga_barang'),
+				'stock'=>$this->input->post('stok_barang'),
+				'kondisi'=>$this->input->post('kondisi'),
+				'title_seo'=>$this->input->post('title_seo'),
+				'permalink'=>$this->input->post('permalink'),
+				'video'=>$this->input->post('video_barang'),
+				'status'=>$this->input->post('status_barang')
+			);
+			$file1=$this->input->post("file1");
+			$file2=$this->input->post("file2");
+			$file3=$this->input->post("file3");
+			$file4=$this->input->post("file4");
+			$file5=$this->input->post("file5");
+			$file6=$this->input->post("file6");
+			$gambar_aktiv=0;
+			if(file_exists("./assets/upload/image/".$file1)&&$file1!=""){
+				$gambar_aktiv=1;
+				if (strpos($file1,$id_barang) === false){
+					$this->db->set('gambar_1',$id_barang."#".$file1);
+					rename("./assets/upload/image/".$file1, "./assets/upload/image/".$id_barang."#".$file1);
+				}else{
+					$this->db->set('gambar_1',$file1);
+				}
+			}
+			if(file_exists("./assets/upload/image/".$file2)&&$file2!=""){
+				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:2;
+				if (strpos($file2,$id_barang) === false){
+					$this->db->set('gambar_2',$id_barang."#".$file2);
+					rename("./assets/upload/image/".$file2, "./assets/upload/image/".$id_barang."#".$file2);
+				}else{
+					$this->db->set('gambar_2',$file2);
+				}
+			}
+			if(file_exists("./assets/upload/image/".$file3)&&$file3!=""){
+				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:3;
+				if (strpos($file3,$id_barang) === false){
+					$this->db->set('gambar_3',$id_barang."#".$file3);
+					rename("./assets/upload/image/".$file3, "./assets/upload/image/".$id_barang."#".$file3);
+				}else{
+					$this->db->set('gambar_3',$file3);
+				}
+			}
+			if(file_exists("./assets/upload/image/".$file4)&&$file4!=""){
+				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:4;
+				if (strpos($file4,$id_barang) === false){
+					$this->db->set('gambar_4',$id_barang."#".$file4);
+					rename("./assets/upload/image/".$file4, "./assets/upload/image/".$id_barang."#".$file4);
+				}else{
+					$this->db->set('gambar_4',$file4);
+				}
+			}
+			if(file_exists("./assets/upload/image/".$file5)&&$file5!=""){
+				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:5;
+				if (strpos($file5,$id_barang) === false){
+					$this->db->set('gambar_5',$id_barang."#".$file5);
+					rename("./assets/upload/image/".$file5, "./assets/upload/image/".$id_barang."#".$file5);
+				}else{
+					$this->db->set('gambar_5',$file5);
+				}
+			}
+			if(file_exists("./assets/upload/image/".$file6)&&$file6!=""){
+				$this->db->set('gambar_6',$id_barang."#".$file6);
+				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:6;
+				if (strpos($file6,$id_barang) === false){
+					rename("./assets/upload/image/".$file6, "./assets/upload/image/".$id_barang."#".$file6);
+				}
+			}
+			$this->db->set('gambar_aktiv', $gambar_aktiv);
+			$this->db->update("barang",$datainput);
+			if($this->db->affected_rows()>0){
+				$this->session->set_flashdata("simpan",array("status"=>true));
+			}else{
+				$this->session->set_flashdata("simpan",array("status"=>false));
+			}
+			redirect("admin/liststok");
+		}else{
+			show_404();
+		}
 	}
 	function simpan_barang(){
 		if($this->input->post('token')!=NULL){
@@ -135,8 +230,8 @@ class Admin extends CI_Controller {
 	}
 	public function upload_image($edit=0){
 		if($this->input->is_ajax_request()){
-			if($edit==1){$folder="image";}
-			else{$folder="temp_image";}
+			if($edit==0){$folder="temp_image";}
+			else{$folder="image";}
 			$config['upload_path'] = './assets/upload/'.$folder.'/';
 			$config['allowed_types'] = 'jpg|png';
 			$config['max_size']     = '500';
@@ -162,6 +257,10 @@ class Admin extends CI_Controller {
 			}
 		   $storeFolder = './assets/upload/'.$folder;   //2
 		   $file=$this->input->post("file");
+		   if($this->input->post('id_barang')!=NULL){
+		   		$this->db->where("id_barang",$this->input->post('id_barang'));
+		   		$this->db->update("barang",array("gambar_".$this->input->post('gambar_ke')=>NULL));
+		   }
 		   if(file_exists($storeFolder.$file)){	
 		   	if(!unlink($storeFolder.$file)){
 		   		echo json_encode(array("status"=>false,"message"=>"File not exist"));

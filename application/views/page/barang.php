@@ -214,6 +214,7 @@ legend {
       
       <script>
       function submit(){
+        submitting=true;
         $("#formbarang").submit();
       }
 
@@ -363,14 +364,7 @@ $.ajax({
       $(".textarea").wysihtml5();
    });   
       
-     $( window ).bind( 'beforeunload' , function( event ) {
-        
-        setTimeout( function() {
-        });
-        return '';
-    }).bind( 'unload', function( event ) {
-        //console.log(event);
-    });
+     
     $(function() {
 
       $('#tag_barang').tagsInput({width:'auto'});
@@ -401,4 +395,25 @@ $.ajax({
 // Uncomment this line to see an input with no interface for adding new tags.
 //      $('input.tags').tagsInput({interactive:false});
     });
+
+var submitting = false;
+window.onbeforeunload = function (e) {
+    if (submitting)
+    {
+        return;
+    }
+
+
+    var message = "Die eingegebenen Formulardaten werden aus Sicherheitsgründen nicht gespeichert und gehen beim Verlassen des Formulars verloren! Sind Sie sicher, dass Sie die Formularseite verlassen möchten?";
+
+    var e = e || window.event;
+
+    // For IE and Firefox prior to version 4
+    if (e) {
+        e.returnValue = message;
+    }
+
+    // For Safari
+    return message;
+};
       </script>

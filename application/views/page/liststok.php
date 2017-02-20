@@ -57,7 +57,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <?php echo form_open('admin/simpan_barang',array("id"=>"formbarang","method"=>"post","enctype"=>"multipart/form-data")); ?>
+              <?php echo form_open('admin/edit_barang',array("id"=>"formbarang","method"=>"post","enctype"=>"multipart/form-data")); ?>
                 <div class="col-md-5">
                 <div class="row">
                 <div class="form-group">
@@ -270,6 +270,8 @@
       </div>
       </div>
               </div>
+              <input type="hidden" name="id_barang" value="<?php echo $editbarang->id_barang; ?>">
+              <input type="hidden" name="token" value="<?php echo $this->security->get_csrf_hash(); ?>">
               <?php echo form_close(); ?>
               <script src="<?php echo base_url(); ?>assets/plugins/select2/select2.full.min.js"></script>
               <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
@@ -311,7 +313,7 @@
                     var id=$(e.target).attr('data-id');
                     var file=$('#file'+id).val();
                     if(id!=undefined){
-                      $.post('<?php echo base_url(); ?>admin/remove_image',{file:file,edit:"1"},function(data,status){
+                      $.post('<?php echo base_url(); ?>admin/remove_image',{file:file,edit:"1",gambar_ke:id,id_barang:'<?php echo $editbarang->id_barang; ?>'},function(data,status){
                         if(status=="success"){
                           var result=JSON.parse(data);
                           if(result.status){
@@ -322,6 +324,10 @@
                             $('#file'+id).val("");
                           }else{
                             alert("gagal menghapus gambar karena : "+result.message);
+                            $('#Timage'+id).html("Click to Add Image");
+                            $('#pro'+id).css("width","0%");
+                            $('#hps'+id).addClass("hide");
+                            $('#file'+id).val("");
                           }
                         }else{
                           alert("gagal koneksi dengan server");
@@ -400,7 +406,36 @@
                   }
                  });
                 });
+                function submit(){
+                  submitting=true;
+                  $("#formbarang").submit();
+                }
+                var submitting = false;
+                window.onbeforeunload = function (e) {
+                    if (submitting)
+                    {
+                        return;
+                    }
+
+
+                    var message = "Die eingegebenen Formulardaten werden aus Sicherheitsgründen nicht gespeichert und gehen beim Verlassen des Formulars verloren! Sind Sie sicher, dass Sie die Formularseite verlassen möchten?";
+
+                    var e = e || window.event;
+
+                    // For IE and Firefox prior to version 4
+                    if (e) {
+                        e.returnValue = message;
+                    }
+
+                    // For Safari
+                    return message;
+                };
               </script>
+            </div>
+            <div class="box-footer clearfix">
+               <input type="hidden" name="token" value="<?php echo $this->security->get_csrf_hash(); ?>">
+              <button type="button" onclick="submit()" class="pull-right btn btn-primary">Simpan Barang
+                <i class="fa fa-arrow-circle-right"></i></button>
             </div>
               <?php
             }else{
@@ -434,27 +469,27 @@
                     <td align="center"><?php 
                           if($key->gambar_1!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_1); ?>" width="80" height="80" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_1); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }else if($key->gambar_2!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_2); ?>" width="80" height="80" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_2); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }else if($key->gambar_3!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_3); ?>" width="80" height="80" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_3); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }else if($key->gambar_4!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_4); ?>" width="80" height="80" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_4); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }if($key->gambar_5!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_5); ?>" width="80" height="80" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_5); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }else if($key->gambar_6!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_6); ?>" width="80" height="80" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_6); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           } 
 
