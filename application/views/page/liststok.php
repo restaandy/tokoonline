@@ -53,7 +53,8 @@
                 }
               </style>
               <div class="box-header">
-              <h3 class="box-title">Edit Barang</h3>
+              <i class="<?php echo $breadcumbparenticon; ?>"></i>
+              <h3 class="box-title"><?php echo $subtitle2; ?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -61,19 +62,38 @@
                 <div class="col-md-5">
                 <div class="row">
                 <div class="form-group">
+                <label>Nama Toko Anda</label>
+                  <?php  
+                    $toko=$this->Model_admin->get_toko_by_member($this->session->userdata("id_member"));
+                    $toko=$toko->result();
+                  ?>
+                  <select class="form-control" name="id_toko" required="">
+                     <option value="">Pilih Toko</option>
+                     <?php
+                      foreach ($toko as $key) {
+                        ?>
+                        <option value="<?php echo $key->id_toko; ?>" <?php echo $key->id_toko==$editbarang->id_toko?'selected':''; ?>><?php echo $key->nama_toko; ?></option>
+                        <?php
+                      }
+                     ?> 
+                  </select>
+                </div>
+                <div class="form-group">
                 <label>Nama Barang : </label>
                   <input class="form-control filter-text" name="nama_barang" value="<?php echo $editbarang->nama_brg; ?>" type="text" required>
                 </div>  
                 <div class="form-group">
                 <label>Kategori : </label>
                 <select class="form-control select2" multiple="multiple" required name="kategori_barang[]" data-placeholder="pilih kategori barang" style="width: 100%;">
-                  <option>Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
+                  <?php  
+                  $kat=$this->Model_admin->get_kategori_by_coma_separator($editbarang->kategori);
+                  $kat=$kat->result();
+                  foreach ($kat as $key) {
+                    ?>
+                     <option value="<?php echo $key->id; ?>"><?php echo $key->kategori; ?></option> 
+                    <?php
+                  }
+                  ?>
                 </select>
               </div>
               <label>Harga : </label>
@@ -106,7 +126,7 @@
                   </select>
               </div>
               <div class="form-group">
-                <label>Link Video : <small>(Bisa di isi URL video dari youtube)</small> </label>
+                <label>Link Video : <small>(Bisa di isi URL youtube video review produk anda)</small> </label>
                  <input type="url" class="form-control" value="<?php echo $editbarang->video; ?>" name="video_barang">
               </div>
               </div>
@@ -152,7 +172,7 @@
               <?php
             }else{
               ?>
-              <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$editbarang->gambar_1); ?>" class="img-thumbnail img-responsive">
+              <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$editbarang->gambar_1); ?>" class="img-thumbnail img-responsive">
               <?php
             }
             ?>
@@ -173,7 +193,7 @@
               <?php
             }else{
               ?>
-              <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$editbarang->gambar_2); ?>" class="img-thumbnail img-responsive">
+              <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$editbarang->gambar_2); ?>" class="img-thumbnail img-responsive">
               <?php
             }
             ?>
@@ -194,7 +214,7 @@
               <?php
             }else{
               ?>
-              <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$editbarang->gambar_3); ?>" class="img-thumbnail img-responsive">
+              <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$editbarang->gambar_3); ?>" class="img-thumbnail img-responsive">
               <?php
             }
             ?>
@@ -215,7 +235,7 @@
               <?php
             }else{
               ?>
-              <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$editbarang->gambar_4); ?>" class="img-thumbnail img-responsive">
+              <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$editbarang->gambar_4); ?>" class="img-thumbnail img-responsive">
               <?php
             }
             ?>
@@ -235,7 +255,7 @@
               <?php
             }else{
               ?>
-              <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$editbarang->gambar_5); ?>" class="img-thumbnail img-responsive">
+              <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$editbarang->gambar_5); ?>" class="img-thumbnail img-responsive">
               <?php
             }
             ?>
@@ -255,7 +275,7 @@
               <?php
             }else{
               ?>
-              <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$editbarang->gambar_6); ?>" class="img-thumbnail img-responsive">
+              <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$editbarang->gambar_6); ?>" class="img-thumbnail img-responsive">
               <?php
             }
             ?>
@@ -301,10 +321,31 @@
                               return false;
                           }
                        });
-                    $(".select2").select2();
+                    
                     var value_kategori='<?php echo $editbarang->kategori; ?>';
-                    value_kategori=value_kategori.split(","); 
+                    value_kategori=value_kategori.split(",");
+                    $('.select2').select2({
+                      ajax: {
+                        url: "<?php echo base_url(); ?>admin/get_kategori",
+                        method: 'POST',
+                        data: function (params) {
+                          return {
+                            q: params.term
+                          };
+                        },
+                        cache: false,
+                        dataType: 'json',
+                        delay: 250,
+                        processResults: function (data, params) {
+                          return {
+                            results: data,
+                            more: false
+                          };
+                        }
+                      }
+                    });
                     $('.select2').val(value_kategori).trigger('change');
+
                     $(".textarea").wysihtml5();
                     $('#tag_barang').tagsInput({width:'auto'});
                  });   
@@ -380,7 +421,7 @@
                           //alert($('#'+id).attr("img-name")+result.message);
                           if(result.status){
                             $('#Timage'+id).html("");
-                            $('#Timage'+id).append('<img src="<?php echo base_url(); ?>assets/upload/image/'+result.message+'" class="img-thumbnail img-responsive">');
+                            $('#Timage'+id).append('<img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/'+result.message+'" class="img-thumbnail img-responsive">');
                             $('#hps'+id).removeClass("hide");
                             $('#file'+id).val(result.message);
                           }else{
@@ -441,7 +482,8 @@
             }else{
               ?>
             <div class="box-header">
-              <h3 class="box-title">List Stock Barang</h3>
+              <i class="<?php echo $breadcumbparenticon; ?>"></i>
+              <h3 class="box-title"><?php echo $subtitle2; ?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -469,27 +511,27 @@
                     <td align="center"><?php 
                           if($key->gambar_1!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_1); ?>" width="80" height="50" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$key->gambar_1); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }else if($key->gambar_2!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_2); ?>" width="80" height="50" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$key->gambar_2); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }else if($key->gambar_3!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_3); ?>" width="80" height="50" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$key->gambar_3); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }else if($key->gambar_4!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_4); ?>" width="80" height="50" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$key->gambar_4); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }if($key->gambar_5!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_5); ?>" width="80" height="50" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$key->gambar_5); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           }else if($key->gambar_6!=NULL){
                             ?>
-                            <img src="<?php echo base_url(); ?>assets/upload/image/<?php echo str_replace('#','%23',$key->gambar_6); ?>" width="80" height="50" class="img-circle img-responsive">
+                            <img src="<?php echo base_url(); ?>assets/upload/<?php  echo $this->session->userdata('username'); ?>/image/<?php echo str_replace('#','%23',$key->gambar_6); ?>" width="80" height="50" class="img-circle img-responsive">
                             <?php
                           } 
 

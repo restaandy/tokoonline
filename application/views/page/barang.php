@@ -44,27 +44,36 @@ legend {
         <section class="col-lg-12">
         <div class="box box-danger">
             <div class="box-header">
-              <i class="fa fa-th"></i>
-              <h3 class="box-title">Tambah Barang</h3>
+              <i class="<?php echo $breadcumbparenticon; ?>"></i>
+              <h3 class="box-title"><?php echo $subtitle2; ?></h3>
             </div>
             <div class="box-body">
               <div class="col-md-5">
                 <div class="row">
+                <div class="form-group">
+                <label>Nama Toko Anda</label>
+                  <?php  
+                    $toko=$this->Model_admin->get_toko_by_member($this->session->userdata("id_member"));
+                    $toko=$toko->result();
+                  ?>
+                  <select class="form-control" name="id_toko" required="">
+                     <option value="">Pilih Toko</option>
+                     <?php
+                      foreach ($toko as $key) {
+                        ?>
+                        <option value="<?php echo $key->id_toko; ?>"><?php echo $key->nama_toko; ?></option>
+                        <?php
+                      }
+                     ?> 
+                  </select>
+                </div>
                 <div class="form-group">
                 <label>Nama Barang : </label>
                   <input class="form-control filter-text" name="nama_barang" type="text" required>
                 </div>  
                 <div class="form-group">
                 <label>Kategori : </label>
-                <select class="form-control select2" multiple="multiple" required name="kategori_barang[]" data-placeholder="pilih kategori barang" style="width: 100%;">
-                  <option>Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
-                </select>
+                <select class="form-control select2" multiple="multiple" required name="kategori_barang[]" data-placeholder="pilih kategori barang" style="width: 100%;"></select>
               </div>
               <label>Harga : </label>
               <div class="form-group input-group">     
@@ -96,7 +105,7 @@ legend {
                   </select>
               </div>
               <div class="form-group">
-                <label>Link Video : <small>(Bisa di isi URL video dari youtube)</small> </label>
+                <label>Link Video : <small>(Bisa di isi URL youtube video review produk anda)</small> </label>
                  <input type="url" class="form-control" name="video_barang">
               </div>
               </div>
@@ -362,6 +371,26 @@ $.ajax({
          });
       $(".select2").select2(); 
       $(".textarea").wysihtml5();
+      $('.select2').select2({
+              ajax: {
+                url: "<?php echo base_url(); ?>admin/get_kategori",
+                method: 'POST',
+                data: function (params) {
+                  return {
+                    q: params.term
+                  };
+                },
+                cache: false,
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data, params) {
+                  return {
+                    results: data,
+                    more: false
+                  };
+                }
+              }
+            });
    });   
       
      

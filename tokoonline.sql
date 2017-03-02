@@ -22,7 +22,8 @@ DROP TABLE IF EXISTS `barang`;
 
 CREATE TABLE `barang` (
   `no` bigint(20) NOT NULL AUTO_INCREMENT,
-  `id_barang` varchar(20) NOT NULL,
+  `id_barang` varchar(100) NOT NULL,
+  `id_toko` varchar(100) NOT NULL,
   `nama_brg` varchar(255) DEFAULT NULL,
   `kategori` text,
   `diskon` tinyint(3) DEFAULT NULL,
@@ -46,12 +47,14 @@ CREATE TABLE `barang` (
   `stock` int(11) DEFAULT NULL,
   `date_update` datetime DEFAULT NULL,
   PRIMARY KEY (`id_barang`),
-  KEY `no` (`no`)
+  KEY `no` (`no`),
+  KEY `toko_barang` (`id_toko`),
+  CONSTRAINT `toko_barang` FOREIGN KEY (`id_toko`) REFERENCES `toko` (`id_toko`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `barang` */
 
-insert  into `barang`(`no`,`id_barang`,`nama_brg`,`kategori`,`diskon`,`harga`,`title_seo`,`tag`,`keyword`,`deskripsi`,`permalink`,`keterangan`,`gambar_1`,`gambar_2`,`gambar_3`,`gambar_4`,`gambar_5`,`gambar_6`,`gambar_aktiv`,`video`,`status`,`kondisi`,`stock`,`date_update`) values (1,'FGqzU4mZ','PSU raidmax 380-400 Watt','Alaska,Delaware',NULL,200000,'jual mudah psu raidmax di semarang','psu raidmax','psu raidmax semarang','jual psu raidmax semarang','jual-murah-psu-raidmax-di-semarang',NULL,'FGqzU4mZ#1_cara_memilih_psu_komputer.jpg','FGqzU4mZ#1_jual_casing_dazumba.jpg',NULL,NULL,NULL,NULL,1,'http://praktisikomputer.com',1,'Bekas',1,'2017-02-18 11:46:17');
+insert  into `barang`(`no`,`id_barang`,`id_toko`,`nama_brg`,`kategori`,`diskon`,`harga`,`title_seo`,`tag`,`keyword`,`deskripsi`,`permalink`,`keterangan`,`gambar_1`,`gambar_2`,`gambar_3`,`gambar_4`,`gambar_5`,`gambar_6`,`gambar_aktiv`,`video`,`status`,`kondisi`,`stock`,`date_update`) values (1,'FGqzU4mZ','Gtug78Dey','PSU raidmax 380-400 Watt','1,5',NULL,200000,'jual mudah psu raidmax di semarang','psu raidmax','psu raidmax semarang','jual psu raidmax semarang','jual-murah-psu-raidmax-di-semarang',NULL,'FGqzU4mZ#1_cara_memilih_psu_komputer.jpg','FGqzU4mZ#1_jual_casing_dazumba.jpg',NULL,NULL,NULL,NULL,2,'http://praktisikomputer.com',1,'Bekas',1,'2017-02-18 11:46:17');
 
 /*Table structure for table `kategori` */
 
@@ -59,12 +62,13 @@ DROP TABLE IF EXISTS `kategori`;
 
 CREATE TABLE `kategori` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_parent` int(11) DEFAULT '0',
   `kategori` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 /*Data for the table `kategori` */
+
+insert  into `kategori`(`id`,`kategori`) values (1,'Komputer'),(2,'Handphone'),(3,'Aksesoris'),(4,'Aksesoris'),(5,'Hardware'),(6,'Software'),(7,'CPU'),(8,'RAM'),(9,'VGA'),(10,'Power Supply Unit'),(11,'Harddisk'),(12,'Flashdisk'),(13,'Motherboard'),(14,'LAN Card'),(15,'Intel'),(16,'AMD'),(17,'SD Card');
 
 /*Table structure for table `loc_kabkot` */
 
@@ -121,27 +125,56 @@ DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member` (
   `no` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_member` varchar(100) NOT NULL,
-  `nama_dpn` varchar(30) DEFAULT NULL,
-  `nama_blk` varchar(30) DEFAULT NULL,
-  `jenkel` enum('L','P') NOT NULL,
+  `nama` varchar(30) DEFAULT NULL,
   `tgl_lhr` date DEFAULT NULL,
-  `tmp_lhr` varchar(50) DEFAULT NULL,
   `email` varchar(50) NOT NULL,
   `nohp` varchar(20) NOT NULL,
   `foto` text,
-  `id_prov` tinyint(4) NOT NULL,
-  `id_kabkot` int(11) NOT NULL,
-  `id_kec` int(11) NOT NULL,
+  `id_prov` tinyint(4) DEFAULT NULL,
+  `id_kabkot` int(4) DEFAULT NULL,
+  `id_kec` int(7) DEFAULT NULL,
   `ket_almt` text NOT NULL,
   `kodepos` varchar(15) DEFAULT NULL,
   `tgl_daftar` datetime DEFAULT NULL,
   PRIMARY KEY (`id_member`),
-  KEY `no` (`no`)
+  KEY `no` (`no`),
+  KEY `member_prov` (`id_prov`),
+  KEY `member_kec` (`id_kec`),
+  KEY `member_kabkot` (`id_kabkot`),
+  CONSTRAINT `member_kabkot` FOREIGN KEY (`id_kabkot`) REFERENCES `loc_kabkot` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `member_kec` FOREIGN KEY (`id_kec`) REFERENCES `loc_kec` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `member_prov` FOREIGN KEY (`id_prov`) REFERENCES `loc_prov` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `member` */
 
-insert  into `member`(`no`,`id_member`,`nama_dpn`,`nama_blk`,`jenkel`,`tgl_lhr`,`tmp_lhr`,`email`,`nohp`,`foto`,`id_prov`,`id_kabkot`,`id_kec`,`ket_almt`,`kodepos`,`tgl_daftar`) values (1,'Rtyg45Der','Andy','Resta','L','1994-06-18','Tegal','restapradika@gmail.com','085866808882',NULL,1,1,1,'Slawi Trayeman	',NULL,NULL);
+insert  into `member`(`no`,`id_member`,`nama`,`tgl_lhr`,`email`,`nohp`,`foto`,`id_prov`,`id_kabkot`,`id_kec`,`ket_almt`,`kodepos`,`tgl_daftar`) values (1,'Rtyg45Der','Andy','1994-06-18','restapradika@gmail.com','085-866-808-882',NULL,13,204,13,'Slawi, Trayeman','524134',NULL);
+
+/*Table structure for table `toko` */
+
+DROP TABLE IF EXISTS `toko`;
+
+CREATE TABLE `toko` (
+  `no` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_toko` varchar(100) NOT NULL,
+  `id_member` varchar(100) NOT NULL,
+  `nama_toko` varchar(20) DEFAULT NULL,
+  `deskripsi_toko` varchar(160) DEFAULT NULL,
+  `kategori_toko` varchar(160) DEFAULT NULL,
+  `id_prov` tinyint(4) DEFAULT NULL,
+  `id_kabkot` int(4) DEFAULT NULL,
+  `id_kec` int(7) DEFAULT NULL,
+  `kodepos` varchar(20) DEFAULT NULL,
+  `ket_almt` text,
+  PRIMARY KEY (`id_toko`),
+  KEY `no` (`no`),
+  KEY `member_toko` (`id_member`),
+  CONSTRAINT `member_toko` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `toko` */
+
+insert  into `toko`(`no`,`id_toko`,`id_member`,`nama_toko`,`deskripsi_toko`,`kategori_toko`,`id_prov`,`id_kabkot`,`id_kec`,`kodepos`,`ket_almt`) values (1,'Gtug78Dey','Rtyg45Der','Sukses Makmur','Toko Besi','1,2',13,204,13,'1111','aaaaa');
 
 /*Table structure for table `trans_cart` */
 

@@ -21,7 +21,11 @@ class Admin extends CI_Controller {
 	public function __construct(){
                 parent::__construct();
                 $this->load->model('Model_admin');
-        }
+
+                $this->session->set_userdata(array("username"=>"restaandy"));
+                $this->session->set_userdata(array("nama"=>"Andy"));
+                $this->session->set_userdata(array("id_member"=>"Rtyg45Der"));
+    }
 	public function dashboard($content="",$key=NULL){
 		if($key!=NULL && $key=="xxx!@#xxx"){
 		$data=$content;
@@ -33,6 +37,12 @@ class Admin extends CI_Controller {
 	public function index()
 	{
 		$data['title']="Dashboard | Admin";
+
+		$data['title2']="Dashboard";
+		$data['subtitle2']="";
+		$data['breadcumbparenticon']="fa fa-dashboard";
+		$data['breadcrumb']=array("Dashboard"=>"");
+
 		$data['logo']="Toko Online";
 		$data['content']=$this->load->view("page/dashboard",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
@@ -41,13 +51,135 @@ class Admin extends CI_Controller {
 	public function profile(){
 		$data['title']="Profile | Admin";
 		$data['logo']="Toko Online";
+		$data['minlogo']="TO";
+		$data['title2']="Profile";
+		$data['subtitle2']=$this->session->userdata('username');
+		$data['breadcumbparenticon']="fa fa-th";
+		$data['breadcrumb']=array("Profile"=>"admin/profile");
+
+		$member=$this->Model_admin->get_member_by_id($this->session->userdata("id_member"));
+		$data['member']=$member;
+		$toko=$this->Model_admin->get_toko_by_member("Rtyg45Der");
+		$data['toko']=$toko;
+
+		$data['prov']=$this->Model_admin->get_prov();
 		$data['content']=$this->load->view("page/profile",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
+	}
+	function simpanprofile(){
+		$id_member=$this->session->userdata("id_member");
+		$datainput=array(
+			"nama"=>$this->input->post('nama'),
+			"tgl_lhr"=>todate($this->input->post('tgl_lhr')),
+			"email"=>$this->input->post('email'),
+			"nohp"=>$this->input->post('no_hp'),
+			"id_prov"=>$this->input->post('prov'),
+			"id_kabkot"=>$this->input->post('kabkot'),
+			"id_kec"=>$this->input->post('kec'),
+			"ket_almt"=>$this->input->post('ket_alamat'),
+			"kodepos"=>$this->input->post('kodepos')
+		);
+		$this->db->where("id_member",$id_member);
+		$this->db->update("member",$datainput);
+		$row_change=$this->db->affected_rows();
+		if($row_change>=0){
+			$this->session->set_flashdata("simpan",array("msg"=>"Data profil telah terganti","status"=>true,"row_change"=>$row_change));	
+		}else{
+			$this->session->set_flashdata("simpan",array("msg"=>"Data profil gagal diganti","status"=>false,"row_change"=>$row_change));	
+		}
+		redirect("admin/profile");
+	}
+	function simpantoko(){
+		$id_toko=$this->input->post("id_toko");
+		$datainput=array(
+			"id_toko"=>$id_toko,
+			"nama_toko"=>$this->input->post('nama'),
+			"deskripsi_toko"=>$this->input->post('deskripsi_toko'),
+			"kategori_toko"=>implode(",",$this->input->post("kategori_toko")),
+			"id_prov"=>$this->input->post('prov1'),
+			"id_kabkot"=>$this->input->post('kabkot1'),
+			"id_kec"=>$this->input->post('kec1'),
+			"ket_almt"=>$this->input->post('ket_alamat'),
+			"kodepos"=>$this->input->post('kodepos')
+		);
+		$this->db->where("id_toko",$id_toko);
+		$this->db->update("toko",$datainput);
+		$row_change=$this->db->affected_rows();
+		if($row_change>=0){
+			$this->session->set_flashdata("simpan",array("msg"=>"Data profil telah terganti","status"=>true,"row_change"=>$row_change));	
+		}else{
+			$this->session->set_flashdata("simpan",array("msg"=>"Data profil gagal diganti","status"=>false,"row_change"=>$row_change));	
+		}
+		redirect("admin/profile");	
+	}
+	function get_kabkot(){
+		if($this->input->is_ajax_request()){
+			$id_prov=$this->input->post("id_prov");
+			$kabkot=$this->Model_admin->get_kabkot($id_prov);
+			$kabkot=$kabkot->result_array();
+			echo json_encode($kabkot);
+		}else{
+			show_404();
+		}
+	}
+	function get_kec(){
+		if($this->input->is_ajax_request()){
+			$id_kabkot=$this->input->post("id_kabkot");
+			$kec=$this->Model_admin->get_kec($id_kabkot);
+			$kec=$kec->result_array();
+			echo json_encode($kec);
+		}else{
+			show_404();
+		}
+	}
+	function get_toko(){
+		if($this->input->is_ajax_request()){
+			$id_toko=$this->input->post("id_toko");
+			$data['id_toko']=$id_toko;
+			$toko=$this->Model_admin->get_toko_by_id($id_toko);
+			if($toko->num_rows()==0){die;}
+			$data['toko']=$toko->row();
+			$this->load->view("page/profil_toko",$data);
+		}else{
+			show_404();
+		}
+	}
+	function get_desc_toko(){
+		if($this->input->is_ajax_request()){
+			$id_toko=$this->input->post("id_toko");
+			$toko=$this->Model_admin->get_toko_by_id($id_toko);
+			if($toko->num_rows()==0){echo "false";die;}
+			$toko=$toko->row();
+			$prov=$this->Model_admin->get_prov($toko->id_prov);
+			$prov=$prov->row();
+			$kabkot=$this->Model_admin->get_kabkot($toko->id_kabkot,TRUE);
+			$kabkot=$kabkot->row();
+			echo json_encode(array("nama_toko"=>$toko->nama_toko,"deskripsi_toko"=>$toko->deskripsi_toko,"provinsi"=>$prov->provinsi,"kabkot"=>$kabkot->kabkot));
+		}else{
+			show_404();
+		}
+	}
+	function get_kategori(){
+		if($this->input->is_ajax_request()){
+		  
+		  $kategori=$this->input->post('q');
+		  $result=$this->Model_admin->get_kategori_ajax($kategori);
+		  $result=$result->result();
+		  echo json_encode($result);  
+		}else{
+			show_404();
+		}
 	}
 	public function liststok($id_barang=NULL){
 		$data['title']="Stok Barang | Admin";
 		$data['logo']="Toko Online";
 		$data['minlogo']="TO";
+
+		$data['title2']="Barang";
+		$data['subtitle2']="Stok Barang";
+		$data['breadcumbparenticon']="fa fa-th";
+		$data['breadcrumb']=array("Barang"=>"admin/barang","Stok Barang"=>"");
+
 		$query=$this->Model_admin->barang_exist_by_id($id_barang);
 		if($id_barang==NULL){
 			$data['barang']=$this->Model_admin->get_stok();
@@ -60,13 +192,17 @@ class Admin extends CI_Controller {
 			$data['content']=$this->load->view("page/liststok",$data,true);
 		}
 		
-		
 		$this->dashboard($data,"xxx!@#xxx");
 	}
 	public function barang(){
 		$data['title']="Tambah Barang | Admin";
 		$data['logo']="Toko Online";
 		$data['minlogo']="TO";
+		
+		$data['title2']="Barang";
+		$data['subtitle2']="Tambah Barang";
+		$data['breadcumbparenticon']="fa fa-th";
+		$data['breadcrumb']=array("Barang"=>"admin/barang","Tambah Barang"=>"");
 		$data['content']=$this->load->view("page/barang",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
 	}
@@ -99,52 +235,52 @@ class Admin extends CI_Controller {
 				$gambar_aktiv=1;
 				if (strpos($file1,$id_barang) === false){
 					$this->db->set('gambar_1',$id_barang."#".$file1);
-					rename("./assets/upload/image/".$file1, "./assets/upload/image/".$id_barang."#".$file1);
+					rename("./assets/upload/".$this->session->userdata("username")."/image/".$file1, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file1);
 				}else{
 					$this->db->set('gambar_1',$file1);
 				}
 			}
-			if(file_exists("./assets/upload/image/".$file2)&&$file2!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/image/".$file2)&&$file2!=""){
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:2;
 				if (strpos($file2,$id_barang) === false){
 					$this->db->set('gambar_2',$id_barang."#".$file2);
-					rename("./assets/upload/image/".$file2, "./assets/upload/image/".$id_barang."#".$file2);
+					rename("./assets/upload/".$this->session->userdata("username")."/image/".$file2, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file2);
 				}else{
 					$this->db->set('gambar_2',$file2);
 				}
 			}
-			if(file_exists("./assets/upload/image/".$file3)&&$file3!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/image/".$file3)&&$file3!=""){
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:3;
 				if (strpos($file3,$id_barang) === false){
 					$this->db->set('gambar_3',$id_barang."#".$file3);
-					rename("./assets/upload/image/".$file3, "./assets/upload/image/".$id_barang."#".$file3);
+					rename("./assets/upload/".$this->session->userdata("username")."/image/".$file3, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file3);
 				}else{
 					$this->db->set('gambar_3',$file3);
 				}
 			}
-			if(file_exists("./assets/upload/image/".$file4)&&$file4!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/image/".$file4)&&$file4!=""){
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:4;
 				if (strpos($file4,$id_barang) === false){
 					$this->db->set('gambar_4',$id_barang."#".$file4);
-					rename("./assets/upload/image/".$file4, "./assets/upload/image/".$id_barang."#".$file4);
+					rename("./assets/upload/".$this->session->userdata("username")."/image/".$file4, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file4);
 				}else{
 					$this->db->set('gambar_4',$file4);
 				}
 			}
-			if(file_exists("./assets/upload/image/".$file5)&&$file5!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/image/".$file5)&&$file5!=""){
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:5;
 				if (strpos($file5,$id_barang) === false){
 					$this->db->set('gambar_5',$id_barang."#".$file5);
-					rename("./assets/upload/image/".$file5, "./assets/upload/image/".$id_barang."#".$file5);
+					rename("./assets/upload/".$this->session->userdata("username")."/image/".$file5, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file5);
 				}else{
 					$this->db->set('gambar_5',$file5);
 				}
 			}
-			if(file_exists("./assets/upload/image/".$file6)&&$file6!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/image/".$file6)&&$file6!=""){
 				$this->db->set('gambar_6',$id_barang."#".$file6);
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:6;
 				if (strpos($file6,$id_barang) === false){
-					rename("./assets/upload/image/".$file6, "./assets/upload/image/".$id_barang."#".$file6);
+					rename("./assets/upload/".$this->session->userdata("username")."/image/".$file6, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file6);
 				}
 			}
 			$this->db->set('gambar_aktiv', $gambar_aktiv);
@@ -184,35 +320,35 @@ class Admin extends CI_Controller {
 			$file5=$this->input->post("file5");
 			$file6=$this->input->post("file6");
 			$gambar_aktiv=0;
-			if(file_exists("./assets/upload/temp_image/".$file1)&&$file1!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file1)&&$file1!=""){
 				$this->db->set('gambar_1',$id_barang."#".$file1);
 				$gambar_aktiv=1;
-				rename("./assets/upload/temp_image/".$file1, "./assets/upload/image/".$id_barang."#".$file1);
+				rename("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file1, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file1);
 			}
-			if(file_exists("./assets/upload/temp_image/".$file2)&&$file2!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file2)&&$file2!=""){
 				$this->db->set('gambar_2',$id_barang."#".$file2);
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:2;
-				rename("./assets/upload/temp_image/".$file2, "./assets/upload/image/".$id_barang."#".$file2);
+				rename("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file2, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file2);
 			}
-			if(file_exists("./assets/upload/temp_image/".$file3)&&$file3!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file3)&&$file3!=""){
 				$this->db->set('gambar_3',$id_barang."#".$file3);
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:3;
-				rename("./assets/upload/temp_image/".$file3, "./assets/upload/image/".$id_barang."#".$file3);
+				rename("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file3, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file3);
 			}
-			if(file_exists("./assets/upload/temp_image/".$file4)&&$file4!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file4)&&$file4!=""){
 				$this->db->set('gambar_4',$id_barang."#".$file4);
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:4;
-				rename("./assets/upload/temp_image/".$file4, "./assets/upload/image/".$id_barang."#".$file4);
+				rename("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file4, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file4);
 			}
-			if(file_exists("./assets/upload/temp_image/".$file5)&&$file5!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file5)&&$file5!=""){
 				$this->db->set('gambar_5',$id_barang."#".$file5);
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:5;
-				rename("./assets/upload/temp_image/".$file5, "./assets/upload/image/".$id_barang."#".$file5);
+				rename("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file5, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file5);
 			}
-			if(file_exists("./assets/upload/temp_image/".$file6)&&$file6!=""){
+			if(file_exists("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file6)&&$file6!=""){
 				$this->db->set('gambar_6',$id_barang."#".$file6);
 				$gambar_aktiv=$gambar_aktiv!=0?$gambar_aktiv:6;
-				rename("./assets/upload/temp_image/".$file6, "./assets/upload/image/".$id_barang."#".$file6);
+				rename("./assets/upload/".$this->session->userdata("username")."/temp_image/".$file6, "./assets/upload/".$this->session->userdata("username")."/image/".$id_barang."#".$file6);
 			}
 			$this->db->set('gambar_aktiv', $gambar_aktiv);
 			$this->db->set('date_update', 'NOW()', FALSE); 
@@ -232,7 +368,7 @@ class Admin extends CI_Controller {
 		if($this->input->is_ajax_request()){
 			if($edit==0){$folder="temp_image";}
 			else{$folder="image";}
-			$config['upload_path'] = './assets/upload/'.$folder.'/';
+			$config['upload_path'] = './assets/upload/'.$this->session->userdata("username").'/'.$folder.'/';
 			$config['allowed_types'] = 'jpg|png';
 			$config['max_size']     = '500';
 			$config['max_width'] = '768';
@@ -255,7 +391,7 @@ class Admin extends CI_Controller {
 			}else{
 				$folder="temp_image/";
 			}
-		   $storeFolder = './assets/upload/'.$folder;   //2
+		   $storeFolder = './assets/upload/'.$this->session->userdata("username").'/'.$folder;   //2
 		   $file=$this->input->post("file");
 		   if($this->input->post('id_barang')!=NULL){
 		   		$this->db->where("id_barang",$this->input->post('id_barang'));

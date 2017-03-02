@@ -415,7 +415,14 @@ $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'csrf_cookie_name';
 $config['csrf_expire'] = 3600;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array('admin/upload_image','admin/remove_image','admin/upload_image/1');
+$config['csrf_exclude_uris'] = array('admin/upload_image',
+	'admin/remove_image',
+	'admin/upload_image/1',
+	'admin/get_kabkot',
+	'admin/get_kec',
+	'admin/get_toko',
+	'admin/get_desc_toko',
+	'admin/get_kategori');
 
 /*
 |--------------------------------------------------------------------------
