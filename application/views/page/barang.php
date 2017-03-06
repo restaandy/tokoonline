@@ -67,11 +67,19 @@ legend {
                      ?> 
                   </select>
                 </div>
-                <div class="form-group">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#barang1" data-toggle="tab">Barang</a></li>
+              <li><a href="#barang2" data-toggle="tab">Rincian Barang</a></li>
+              <li><a href="#barang3" data-toggle="tab">Review Barang</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="active tab-pane" id="barang1">
+              <div class="form-group">
                 <label>Nama Barang : </label>
                   <input class="form-control filter-text" name="nama_barang" type="text" required>
-                </div>  
-                <div class="form-group">
+              </div>
+              <div class="form-group">
                 <label>Kategori : </label>
                 <select class="form-control select2" multiple="multiple" required name="kategori_barang[]" data-placeholder="pilih kategori barang" style="width: 100%;"></select>
               </div>
@@ -85,7 +93,29 @@ legend {
               <div class="form-group input-group">     
                 <input class="form-control filter-number" name="stok_barang" type="text" required>
                 <span class="input-group-addon"> Item</span>
+              </div> 
+              </div>  
+              <div class="tab-pane" id="barang2">
+              <label>Berat : </label>
+              <div class="form-group input-group">     
+                <input class="form-control filter-number" name="berat" type="text">
+                <span class="input-group-addon"> gram</span>
+              </div> 
+              <label>Panjang : </label>
+              <div class="form-group input-group">     
+                <input class="form-control filter-number" name="panjang" type="text">
+                <span class="input-group-addon"> Cm</span>
+              </div> 
+              <label>Lebar : </label>
+              <div class="form-group input-group">     
+                <input class="form-control filter-number" name="lebar" type="text">
+                <span class="input-group-addon"> Cm</span>
               </div>
+              <label>Tinggi : </label>
+              <div class="form-group input-group">     
+                <input class="form-control filter-number" name="tinggi" type="text">
+                <span class="input-group-addon"> Cm</span>
+              </div>  
               <div class="form-group">
                 <label>Status : </label>
                   <select class="form-control" name="status_barang" required>
@@ -104,14 +134,23 @@ legend {
                     <option value="LainLain">Tanyakan pada penjual</option>
                   </select>
               </div>
-              <div class="form-group">
-                <label>Link Video : <small>(Bisa di isi URL youtube video review produk anda)</small> </label>
-                 <input type="url" class="form-control" name="video_barang">
               </div>
+              <div class="tab-pane" id="barang3">
+                  <div class="form-group">
+                    <label>Link Video : <small>(Bisa di isi URL youtube video review produk anda)</small> </label>
+                     <input type="url" class="form-control" name="video_barang">
+                  </div>
+                  <div class="form-group">
+                    <label>Link Website : <small>(Bisa di isi URL website review produk anda)</small> </label>
+                     <input type="url" class="form-control" name="web_review">
+                  </div>
+              </div>     
+            </div>  
+          </div>    
+
               </div>
               </div>
               <div class="col-md-7">
-              
               <fieldset>
               <legend>Pengaturan pada Search Engine</legend>
               <div class="form-group">
