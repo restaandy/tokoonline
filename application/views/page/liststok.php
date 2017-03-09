@@ -67,7 +67,7 @@
                     $toko=$this->Model_admin->get_toko_by_member($this->session->userdata("id_member"));
                     $toko=$toko->result();
                   ?>
-                  <select class="form-control" name="id_toko" required="">
+                  <select class="form-control" name="id_toko" required>
                      <option value="">Pilih Toko</option>
                      <?php
                       foreach ($toko as $key) {
@@ -82,7 +82,6 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#barang1" data-toggle="tab">Barang</a></li>
               <li><a href="#barang2" data-toggle="tab">Rincian Barang</a></li>
-              <li><a href="#barang3" data-toggle="tab">Review Barang</a></li>
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="barang1">
@@ -115,29 +114,7 @@
                 <input class="form-control filter-number" name="stok_barang" value="<?php echo $editbarang->stock; ?>" type="text" required>
                 <span class="input-group-addon"> Item</span>
               </div>
-              </div>
-              <div class="tab-pane" id="barang2">
-                <label>Berat : </label>
-              <div class="form-group input-group">     
-                <input class="form-control filter-number" name="berat" type="text">
-                <span class="input-group-addon"> gram</span>
-              </div> 
-              <label>Panjang : </label>
-              <div class="form-group input-group">     
-                <input class="form-control filter-number" name="panjang" type="text">
-                <span class="input-group-addon"> Cm</span>
-              </div> 
-              <label>Lebar : </label>
-              <div class="form-group input-group">     
-                <input class="form-control filter-number" name="lebar" type="text">
-                <span class="input-group-addon"> Cm</span>
-              </div>
-              <label>Tinggi : </label>
-              <div class="form-group input-group">     
-                <input class="form-control filter-number" name="tinggi" type="text">
-                <span class="input-group-addon"> Cm</span>
-              </div>  
-                <div class="form-group">
+              <div class="form-group">
                 <label>Status : </label>
                   <select class="form-control" name="status_barang" required>
                     <option value="">Status Barang</option>
@@ -156,17 +133,37 @@
                   </select>
               </div>
               </div>
-              <div class="tab-pane" id="barang3">
+              <div class="tab-pane" id="barang2">
+                <label>Berat : </label>
+              <div class="form-group input-group">     
+                <input class="form-control filter-number" value="<?php echo $editbarang->berat; ?>" name="berat" type="text">
+                <span class="input-group-addon"> gram</span>
+              </div> 
+              <label>Panjang : </label>
+              <div class="form-group input-group">     
+                <input class="form-control filter-number" value="<?php echo $editbarang->panjang; ?>" name="panjang" type="text">
+                <span class="input-group-addon"> Cm</span>
+              </div> 
+              <label>Lebar : </label>
+              <div class="form-group input-group">     
+                <input class="form-control filter-number" value="<?php echo $editbarang->lebar; ?>" name="lebar" type="text">
+                <span class="input-group-addon"> Cm</span>
+              </div>
+              <label>Tinggi : </label>
+              <div class="form-group input-group">     
+                <input class="form-control filter-number" name="tinggi" value="<?php echo $editbarang->tinggi; ?>" type="text">
+                <span class="input-group-addon"> Cm</span>
+              </div>  
               <div class="form-group">
                 <label>Link Video : <small>(Bisa di isi URL youtube video review produk anda)</small> </label>
                  <input type="url" class="form-control" value="<?php echo $editbarang->video; ?>" name="video_barang">
               </div>
               <div class="form-group">
                     <label>Link Website : <small>(Bisa di isi URL website review produk anda)</small> </label>
-                     <input type="url" class="form-control" name="web_review">
+                     <input type="url" class="form-control" value="<?php echo $editbarang->web_review; ?>" name="web_review">
                   </div>
+              </div>  
               </div>
-            </div>
 </div>              
               </div>
               </div>

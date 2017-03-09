@@ -56,7 +56,7 @@ legend {
                     $toko=$this->Model_admin->get_toko_by_member($this->session->userdata("id_member"));
                     $toko=$toko->result();
                   ?>
-                  <select class="form-control" name="id_toko" required="">
+                  <select class="form-control" name="id_toko" required>
                      <option value="">Pilih Toko</option>
                      <?php
                       foreach ($toko as $key) {
@@ -71,7 +71,6 @@ legend {
             <ul class="nav nav-tabs">
               <li class="active"><a href="#barang1" data-toggle="tab">Barang</a></li>
               <li><a href="#barang2" data-toggle="tab">Rincian Barang</a></li>
-              <li><a href="#barang3" data-toggle="tab">Review Barang</a></li>
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="barang1">
@@ -93,6 +92,24 @@ legend {
               <div class="form-group input-group">     
                 <input class="form-control filter-number" name="stok_barang" type="text" required>
                 <span class="input-group-addon"> Item</span>
+              </div>
+              <div class="form-group">
+                <label>Status : </label>
+                  <select class="form-control" name="status_barang" required>
+                    <option value="">Status Barang</option>
+                    <option value="1">Tersedia</option>
+                    <option value="0">Belum Tersedia</option>
+                  </select>
+              </div>         
+              <div class="form-group">
+                <label>Kondisi Barang : <small>(sertakan kondisi barang yang anda jual)</small> </label>
+                  <select class="form-control" name="kondisi" required>
+                    <option value="">Kondisi Barang</option>
+                    <option value="Baru">Baru</option>
+                    <option value="Bekas">Bekas</option>
+                    <option value="Rusak">Rusak</option>
+                    <option value="LainLain">Tanyakan pada penjual</option>
+                  </select>
               </div> 
               </div>  
               <div class="tab-pane" id="barang2">
@@ -117,26 +134,6 @@ legend {
                 <span class="input-group-addon"> Cm</span>
               </div>  
               <div class="form-group">
-                <label>Status : </label>
-                  <select class="form-control" name="status_barang" required>
-                    <option value="">Status Barang</option>
-                    <option value="1">Tersedia</option>
-                    <option value="0">Belum Tersedia</option>
-                  </select>
-              </div>         
-              <div class="form-group">
-                <label>Kondisi Barang : <small>(sertakan kondisi barang yang anda jual)</small> </label>
-                  <select class="form-control" name="kondisi" required>
-                    <option value="">Kondisi Barang</option>
-                    <option value="Baru">Baru</option>
-                    <option value="Bekas">Bekas</option>
-                    <option value="Rusak">Rusak</option>
-                    <option value="LainLain">Tanyakan pada penjual</option>
-                  </select>
-              </div>
-              </div>
-              <div class="tab-pane" id="barang3">
-                  <div class="form-group">
                     <label>Link Video : <small>(Bisa di isi URL youtube video review produk anda)</small> </label>
                      <input type="url" class="form-control" name="video_barang">
                   </div>
@@ -144,7 +141,7 @@ legend {
                     <label>Link Website : <small>(Bisa di isi URL website review produk anda)</small> </label>
                      <input type="url" class="form-control" name="web_review">
                   </div>
-              </div>     
+              </div>    
             </div>  
           </div>    
 
@@ -167,7 +164,7 @@ legend {
               </div>
               <div class="form-group">
                 <label>Keyword Pencarian : <small>(Pisah dengan koma ex : jual mobil sedan, mobil sedan antik)</small></label>
-                 <input type="text" class="form-control filter-text" maxlength="160" name="keyword_barang">
+                 <input type="text" class="form-control filter-text" data-role="tagsinput" id="tag_barang2" maxlength="160" name="keyword_barang">
               </div>
               <div class="form-group">
                 <label>Tag : <small>(Pisah dengan koma ex : mobil,motor)</small> </label>
@@ -365,7 +362,7 @@ $.ajax({
           //alert($('#'+id).attr("img-name")+result.message);
           if(result.status){
             $('#Timage'+id).html("");
-            $('#Timage'+id).append('<img src="<?php echo base_url(); ?>assets/upload/temp_image/'+result.message+'" class="img-thumbnail img-responsive">');
+            $('#Timage'+id).append('<img src="<?php echo base_url(); ?>assets/upload/<?php echo $this->session->userdata("username"); ?>/temp_image/'+result.message+'" class="img-thumbnail img-responsive">');
             $('#hps'+id).removeClass("hide");
             $('#file'+id).val(result.message);
           }else{
@@ -436,6 +433,7 @@ $.ajax({
     $(function() {
 
       $('#tag_barang').tagsInput({width:'auto'});
+      $('#tag_barang2').tagsInput({width:'auto'});
       /*
       $('#tags_2').tagsInput({
         width: 'auto',

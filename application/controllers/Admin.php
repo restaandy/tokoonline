@@ -34,6 +34,10 @@ class Admin extends CI_Controller {
 			redirect("not-found");
 		}
 	}
+	function get_loc(){
+		echo file_get_contents("https://geoip-db.com/json/");
+		
+	}
 	public function index()
 	{
 		$data['title']="Dashboard | Admin";
@@ -210,6 +214,7 @@ class Admin extends CI_Controller {
 		if($this->input->post('token')!=NULL){
 			$id_barang=$this->input->post('id_barang');
 			$datainput=array(
+				'id_toko'=>$this->input->post('id_toko'),
 				'nama_brg'=>$this->input->post('nama_barang'),
 				'kategori'=>implode(",",$this->input->post('kategori_barang')),
 				'tag'=>$this->input->post('tag_barang'),
@@ -222,7 +227,12 @@ class Admin extends CI_Controller {
 				'title_seo'=>$this->input->post('title_seo'),
 				'permalink'=>$this->input->post('permalink'),
 				'video'=>$this->input->post('video_barang'),
-				'status'=>$this->input->post('status_barang')
+				'web_review'=>$this->input->post('web_review'),
+				'status'=>$this->input->post('status_barang'),
+				'berat'=>$this->input->post('berat'),
+				'panjang'=>$this->input->post('panjang'),
+				'lebar'=>$this->input->post('lebar'),
+				'tinggi'=>$this->input->post('tinggi')
 			);
 			$file1=$this->input->post("file1");
 			$file2=$this->input->post("file2");
@@ -299,6 +309,7 @@ class Admin extends CI_Controller {
 		if($this->input->post('token')!=NULL){
 			$id_barang=$this->Model_admin->get_id_barang_uniq();
 			$datainput=array(
+				'id_toko'=>$this->input->post('id_toko'),
 				'nama_brg'=>$this->input->post('nama_barang'),
 				'kategori'=>implode(",",$this->input->post('kategori_barang')),
 				'tag'=>$this->input->post('tag_barang'),
@@ -311,7 +322,12 @@ class Admin extends CI_Controller {
 				'title_seo'=>$this->input->post('title_seo'),
 				'permalink'=>$this->input->post('permalink'),
 				'video'=>$this->input->post('video_barang'),
-				'status'=>$this->input->post('status_barang')
+				'web_review'=>$this->input->post('web_review'),
+				'status'=>$this->input->post('status_barang'),
+				'berat'=>$this->input->post('berat'),
+				'panjang'=>$this->input->post('panjang'),
+				'lebar'=>$this->input->post('lebar'),
+				'tinggi'=>$this->input->post('tinggi')
 			);
 			$file1=$this->input->post("file1");
 			$file2=$this->input->post("file2");
