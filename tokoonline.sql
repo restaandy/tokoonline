@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS `barang`;
 CREATE TABLE `barang` (
   `no` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_barang` varchar(100) NOT NULL,
+  `id_member` varchar(100) DEFAULT NULL,
   `id_toko` varchar(100) NOT NULL,
   `nama_brg` varchar(255) DEFAULT NULL,
   `kategori` text,
@@ -54,12 +55,14 @@ CREATE TABLE `barang` (
   PRIMARY KEY (`id_barang`),
   KEY `no` (`no`),
   KEY `toko_barang` (`id_toko`),
+  KEY `member_barang` (`id_member`),
+  CONSTRAINT `member_barang` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`) ON UPDATE CASCADE,
   CONSTRAINT `toko_barang` FOREIGN KEY (`id_toko`) REFERENCES `toko` (`id_toko`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `barang` */
 
-insert  into `barang`(`no`,`id_barang`,`id_toko`,`nama_brg`,`kategori`,`diskon`,`harga`,`title_seo`,`tag`,`keyword`,`deskripsi`,`permalink`,`keterangan`,`gambar_1`,`gambar_2`,`gambar_3`,`gambar_4`,`gambar_5`,`gambar_6`,`gambar_aktiv`,`video`,`web_review`,`status`,`kondisi`,`stock`,`berat`,`lebar`,`panjang`,`tinggi`,`date_update`) values (1,'FGqzU4mZ','Gtug78Dey','PSU raidmax 380-400 Watt','1,5',NULL,200000,'jual mudah psu raidmax di semarang','psu raidmax','psu raidmax semarang','jual psu raidmax semarang','jual-murah-psu-raidmax-di-semarang','<p><b>psu raid max keren</b></p>','FGqzU4mZ#1_cara_memilih_psu_komputer.jpg','FGqzU4mZ#1_jual_casing_dazumba.jpg',NULL,NULL,NULL,NULL,2,'http://praktisikomputer.com','',1,'Bekas',1,2000,50,50,23,'2017-02-18 11:46:17'),(5,'VJYuGAho','Gtug78Dey','Shiseido Black Mask','1',NULL,3000,'black mask','sdfsdf','qsdfsd','sdfs','black-mask','<p><b>sdfsdfsdfsf</b></p>','VJYuGAho#1_black_mask_shisheido.jpg',NULL,NULL,NULL,NULL,NULL,1,'','',1,'Baru',60,0,0,0,0,'2017-03-08 20:40:14');
+insert  into `barang`(`no`,`id_barang`,`id_member`,`id_toko`,`nama_brg`,`kategori`,`diskon`,`harga`,`title_seo`,`tag`,`keyword`,`deskripsi`,`permalink`,`keterangan`,`gambar_1`,`gambar_2`,`gambar_3`,`gambar_4`,`gambar_5`,`gambar_6`,`gambar_aktiv`,`video`,`web_review`,`status`,`kondisi`,`stock`,`berat`,`lebar`,`panjang`,`tinggi`,`date_update`) values (1,'FGqzU4mZ','Rtyg45Der','Gtug78Dey','PSU raidmax 380-400 Watt','1,5',NULL,200000,'jual mudah psu raidmax di semarang','psu raidmax','psu raidmax semarang','jual psu raidmax semarang','jual-murah-psu-raidmax-di-semarang','<p><b>psu raid max keren</b></p>','FGqzU4mZ#1_cara_memilih_psu_komputer.jpg','FGqzU4mZ#1_jual_casing_dazumba.jpg',NULL,NULL,NULL,NULL,2,'http://praktisikomputer.com','',1,'Bekas',1,2000,50,50,23,'2017-02-18 11:46:17'),(5,'VJYuGAho','Rtyg45Der','Gtug78Dey','Shiseido Black Mask Murah','1',NULL,3000,'black mask','sdfsdf','qsdfsd','sdfs','black-mask','<p><b>sdfsdfsdfsf</b></p>','VJYuGAho#1_black_mask_shisheido.jpg',NULL,NULL,NULL,NULL,NULL,0,'','',1,'Baru',60,0,0,0,0,'2017-03-08 20:40:14');
 
 /*Table structure for table `kategori` */
 
@@ -180,6 +183,22 @@ CREATE TABLE `toko` (
 /*Data for the table `toko` */
 
 insert  into `toko`(`no`,`id_toko`,`id_member`,`nama_toko`,`deskripsi_toko`,`kategori_toko`,`id_prov`,`id_kabkot`,`id_kec`,`kodepos`,`ket_almt`) values (1,'Gtug78Dey','Rtyg45Der','Sukses Makmur','Toko Besi','1,2',13,204,13,'1111','aaaaa');
+
+/*Table structure for table `tracking` */
+
+DROP TABLE IF EXISTS `tracking`;
+
+CREATE TABLE `tracking` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_member` varchar(100) NOT NULL,
+  `tahun` year(4) DEFAULT NULL,
+  `data_tracking` text,
+  PRIMARY KEY (`id`),
+  KEY `member_tracking` (`id_member`),
+  CONSTRAINT `member_tracking` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `tracking` */
 
 /*Table structure for table `trans_cart` */
 

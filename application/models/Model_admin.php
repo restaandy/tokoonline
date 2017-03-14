@@ -13,7 +13,8 @@ class Model_admin extends CI_Model {
             }  
             return $id_barang;
     }
-    public function get_stok(){
+    public function get_stok($id_member=NULL){
+        if($id_member!=NULL){$this->db->where("id_member",$id_member);}
         $query=$this->db->get("barang");
         return $query;
     }

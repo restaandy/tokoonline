@@ -46,8 +46,9 @@ class Admin extends CI_Controller {
 		$data['subtitle2']="";
 		$data['breadcumbparenticon']="fa fa-dashboard";
 		$data['breadcrumb']=array("Dashboard"=>"");
-
 		$data['logo']="Toko Online";
+		$data['jml_toko']=$this->Model_admin->get_toko_by_member($this->session->userdata("id_member"));
+		$data['jml_barang']=$this->Model_admin->get_stok($this->session->userdata("id_member"));	
 		$data['content']=$this->load->view("page/dashboard",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
 
@@ -294,6 +295,7 @@ class Admin extends CI_Controller {
 				}
 			}
 			$this->db->set('gambar_aktiv', $gambar_aktiv);
+			$this->db->where("id_barang",$id_barang);
 			$this->db->update("barang",$datainput);
 			if($this->db->affected_rows()>0){
 				$this->session->set_flashdata("simpan",array("status"=>true));
@@ -310,6 +312,7 @@ class Admin extends CI_Controller {
 			$id_barang=$this->Model_admin->get_id_barang_uniq();
 			$datainput=array(
 				'id_toko'=>$this->input->post('id_toko'),
+				'id_member'=>$this->session->userdata("id_member"),
 				'nama_brg'=>$this->input->post('nama_barang'),
 				'kategori'=>implode(",",$this->input->post('kategori_barang')),
 				'tag'=>$this->input->post('tag_barang'),

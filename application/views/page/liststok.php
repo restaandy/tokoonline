@@ -185,7 +185,7 @@
               </div>
               <div class="form-group">
                 <label>Keyword SEO : <small>(Pisah dengan koma ex : jual mobil sedan, mobil sedan antik)</small></label>
-                 <input type="text" class="form-control filter-text" maxlength="160" value="<?php echo $editbarang->keyword; ?>" name="keyword_barang">
+                 <input type="text" class="form-control filter-text" id="tag_barang1" data-role="tagsinput" maxlength="160" value="<?php echo $editbarang->keyword; ?>" name="keyword_barang">
               </div>
               <div class="form-group">
                 <label>Tag : <small>(Pisah dengan koma ex : mobil,motor)</small> </label>
@@ -395,6 +395,7 @@
 
                     $(".textarea").wysihtml5();
                     $('#tag_barang').tagsInput({width:'auto'});
+                    $('#tag_barang1').tagsInput({width:'auto'});
                  });   
                 function hapusimg(e,edit){
                   if($(e.target).attr('data-id')!=undefined){

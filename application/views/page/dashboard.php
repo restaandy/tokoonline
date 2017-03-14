@@ -4,8 +4,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>5</h3>
-
+              <h3><?php  echo $jml_toko->num_rows();  ?></h3>
               <p>Toko</p>
             </div>
             <div class="icon">
@@ -19,7 +18,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>53</h3>
+              <h3><?php  echo $jml_barang->num_rows();  ?></h3>
               <p>Produk</p>
             </div>
             <div class="icon">
