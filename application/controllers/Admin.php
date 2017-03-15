@@ -49,7 +49,7 @@ class Admin extends CI_Controller {
 		$data['logo']="Toko Online";
 		$data['jml_toko']=$this->Model_admin->get_toko_by_member($this->session->userdata("id_member"));
 		$data['jml_barang']=$this->Model_admin->get_stok($this->session->userdata("id_member"));	
-		$data['content']=$this->load->view("page/dashboard",$data,true);
+		$data['content']=$this->load->view("page_admin/dashboard",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
 
 	}
@@ -68,7 +68,7 @@ class Admin extends CI_Controller {
 		$data['toko']=$toko;
 
 		$data['prov']=$this->Model_admin->get_prov();
-		$data['content']=$this->load->view("page/profile",$data,true);
+		$data['content']=$this->load->view("page_admin/profile",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
 	}
 	function simpanprofile(){
@@ -144,7 +144,7 @@ class Admin extends CI_Controller {
 			$toko=$this->Model_admin->get_toko_by_id($id_toko);
 			if($toko->num_rows()==0){die;}
 			$data['toko']=$toko->row();
-			$this->load->view("page/profil_toko",$data);
+			$this->load->view("page_admin/profil_toko",$data);
 		}else{
 			show_404();
 		}
@@ -188,13 +188,13 @@ class Admin extends CI_Controller {
 		$query=$this->Model_admin->barang_exist_by_id($id_barang);
 		if($id_barang==NULL){
 			$data['barang']=$this->Model_admin->get_stok();
-			$data['content']=$this->load->view("page/liststok",$data,true);
+			$data['content']=$this->load->view("page_admin/liststok",$data,true);
 		}else if($query){
 			$data['editbarang']=$query;
-			$data['content']=$this->load->view("page/liststok",$data,true);
+			$data['content']=$this->load->view("page_admin/liststok",$data,true);
 		}else{
 			$data['barang']=$this->Model_admin->get_stok();
-			$data['content']=$this->load->view("page/liststok",$data,true);
+			$data['content']=$this->load->view("page_admin/liststok",$data,true);
 		}
 		
 		$this->dashboard($data,"xxx!@#xxx");
@@ -208,7 +208,7 @@ class Admin extends CI_Controller {
 		$data['subtitle2']="Tambah Barang";
 		$data['breadcumbparenticon']="fa fa-th";
 		$data['breadcrumb']=array("Barang"=>"admin/barang","Tambah Barang"=>"");
-		$data['content']=$this->load->view("page/barang",$data,true);
+		$data['content']=$this->load->view("page_admin/barang",$data,true);
 		$this->dashboard($data,"xxx!@#xxx");
 	}
 	function edit_barang(){

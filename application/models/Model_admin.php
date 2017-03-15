@@ -13,10 +13,38 @@ class Model_admin extends CI_Model {
             }  
             return $id_barang;
     }
+    
     public function get_stok($id_member=NULL){
         if($id_member!=NULL){$this->db->where("id_member",$id_member);}
         $query=$this->db->get("barang");
         return $query;
+    }
+    public function send_email($to_email,$subjek,$msg){
+                $config = Array(
+                        'protocol' => 'smtp',
+                        'smtp_host' => 'ssl://smtp.gmail.com',
+                        'smtp_port' => 465,
+                        'smtp_user' => 'bantuan@psi.dinus.ac.id', // change it to yours
+                        'smtp_pass' => 'tanyapakifan', // change it to yours
+                        'mailtype' => 'html',
+                        'charset' => 'iso-8859-1',
+                        'wordwrap' => TRUE
+                        );
+                $this->email->initialize($config);
+                $this->email->set_newline("\r\n");
+                $this->email->from('bantuan@psi.dinus.ac.id','DINUS KARIR CENTER'); // change it to yours
+                $this->email->to($to_email);// change it to yours
+                $this->email->reply_to("bantuan@psi.dinus.ac.id");
+                $this->email->subject($subjek);
+                $this->email->message($msg);
+                 if($this->email->send())
+                 {
+                    return true;    
+                 }
+                 else
+                 {
+                    return false;
+                 }
     }
     public function barang_exist_by_id($id_barang){
         $this->db->where("id_barang",$id_barang);

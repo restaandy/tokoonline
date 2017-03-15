@@ -50,6 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'admin';
+$route['validasi/(:any)/(:any)'] = 'login/validasi_member/$2';
+$route['register'] = 'login/register';
 $route['not-found'] = 'admin/not_found';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

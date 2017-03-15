@@ -136,14 +136,14 @@ CREATE TABLE `member` (
   `nama` varchar(30) DEFAULT NULL,
   `tgl_lhr` date DEFAULT NULL,
   `email` varchar(50) NOT NULL,
-  `nohp` varchar(20) NOT NULL,
+  `nohp` varchar(20) DEFAULT NULL,
   `foto` text,
   `id_prov` tinyint(4) DEFAULT NULL,
   `id_kabkot` int(4) DEFAULT NULL,
   `id_kec` int(7) DEFAULT NULL,
-  `ket_almt` text NOT NULL,
+  `ket_almt` text,
   `kodepos` varchar(15) DEFAULT NULL,
-  `tgl_daftar` datetime DEFAULT NULL,
+  `tgl_daftar` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_member`),
   KEY `no` (`no`),
   KEY `member_prov` (`id_prov`),
@@ -222,6 +222,23 @@ CREATE TABLE `trans_cart` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*Data for the table `trans_cart` */
+
+/*Table structure for table `user_member` */
+
+DROP TABLE IF EXISTS `user_member`;
+
+CREATE TABLE `user_member` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_member` varchar(100) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_member` (`id_member`),
+  CONSTRAINT `user_member` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `user_member` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
